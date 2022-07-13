@@ -45,7 +45,18 @@
           <div class="content-wrapper">
             <!-- Content -->
 				<div class="container-xxl flex-grow-1 container-p-y">
+					<div class="row">
 					
+						<!-- If trash is empty show this -->
+				  	 	<div class="col-lg-12">
+           					<div class="d-flex justify-content-center mt-md-5 mt-5">
+           						<img src="../dashboard_assets/img/icons/unicons/bin.png" width="" height=""><br>
+           					</div>
+           					<h3 class="text-center mt-md-4 mt-4">Trash is Empty</h3>
+						</div>
+				  	 
+				  	 	<!-- else show this -->
+					</div>
             	</div>
             <!-- / Content -->
 

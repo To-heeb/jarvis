@@ -46,11 +46,16 @@
             <!-- Content -->
 				<div class="container-xxl flex-grow-1 container-p-y">
 				  <div class="row">
+				  
+				  	 <!-- If folder is empty show this -->
+				  	 
+				  	 
+				  	 <!-- else show this -->
 	              	<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Folders</span></h4>
 	              	<div class="col-lg-2 col-md-3 col-6 mb-3">
 	              		<a href=""><i class='bx bxs-star'></i><i class='bx bxs-folder' style='color:#8588ff; font-size: 155px;'></i></a>
 	              		<button class="btn" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	              			<span class="me-1">File Name </span><i class="bx bx-dots-vertical-rounded"></i>
+	              			<span class="me-xxl-1">File Name </span><i class="bx bx-dots-vertical-rounded"></i>
 						</button>
 	              		<div class="dropdown-menu" aria-labelledby="cardOpt6">
 		                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-folder-open'></i> Open</a>
@@ -63,7 +68,7 @@
 	              	<div class="col-lg-2 col-md-3 col-6 mb-3">
 	              		<a href=""><i class='bx bxs-star'></i><i class='bx bxs-folder' style='color:#8588ff; font-size: 155px;'></i></a>
 	              		<button class="btn" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	              			<span class="me-1" >File Name </span><i class="bx bx-dots-vertical-rounded"></i>
+	              			<span class="me-xxl-1" >File Name </span><i class="bx bx-dots-vertical-rounded"></i>
 						</button>
 	              		<div class="dropdown-menu" aria-labelledby="cardOpt6">
 		                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-folder-open'></i> Open</a>
@@ -76,7 +81,7 @@
 	              	<div class="col-lg-2 col-md-3 col-6 mb-3">
 	              		<a href=""><i class='bx bxs-star' style='color:#F5F5F9;'></i><i class='bx bxs-folder' style='color:#8588ff; font-size: 155px;'></i></a>
 	              		<button class="btn" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	              			<span class="me-1">File Name </span><i class="bx bx-dots-vertical-rounded"></i>
+	              			<span class="me-xxl-1">File Name </span><i class="bx bx-dots-vertical-rounded"></i>
 						</button>
 	              		<div class="dropdown-menu" aria-labelledby="cardOpt6">
 		                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-folder-open'></i> Open</a>

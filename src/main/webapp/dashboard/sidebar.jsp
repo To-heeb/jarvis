@@ -56,7 +56,7 @@
                   </g>
                 </svg>
               </span>
-              <span class="app-brand-text demo menu-text fw-bolder ms-2">dms</span>
+              <span class="app-brand-text demo menu-text fw-bolder ms-2">Jarvis</span>
             </a>
 
             <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -80,7 +80,7 @@
             <li class="menu-item">
               <a href="recent" class="menu-link">
                 <i class='menu-icon tf-icons bx bx-time-five'></i>
-                <div data-i18n="Analytics">Recent</div>
+                <div data-i18n="Layouts">Recent</div>
               </a>
             </li>
 			

@@ -59,6 +59,26 @@ public class DashboardControllerServlet extends HttpServlet {
 			showSettings(request, response, "settings.jsp");
 			break;
 			
+		case "/dashboard/documents":
+			listDocuments(request, response, "documents.jsp");
+			break;
+			
+		case "/dashboard/videos":
+			listVideos(request, response, "videos.jsp");
+			break;
+			
+		case "/dashboard/audios":
+			listAudios(request, response, "audios.jsp");
+			break;
+			
+		case "/dashboard/images":
+			listImages(request, response, "images.jsp");
+			break;
+			
+		case "/dashboard/others":
+			listOthers(request, response, "others.jsp");
+			break;
+			
 		case "/dashboard":
 			showIndex(request, response, "index.jsp");
 			break;
@@ -68,6 +88,50 @@ public class DashboardControllerServlet extends HttpServlet {
 			break;
 		}
 		
+	}
+
+	private void listOthers(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+			// initiate dispatcher
+			RequestDispatcher dispatcher = request.getRequestDispatcher(page);	
+							
+			// forward the request to JSP
+			dispatcher.forward(request, response);
+		
+	}
+
+	private void listImages(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+			// initiate dispatcher
+			RequestDispatcher dispatcher = request.getRequestDispatcher(page);	
+							
+			// forward the request to JSP
+			dispatcher.forward(request, response);
+		
+	}
+
+	private void listAudios(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+			// initiate dispatcher
+			RequestDispatcher dispatcher = request.getRequestDispatcher(page);	
+							
+			// forward the request to JSP
+			dispatcher.forward(request, response);
+		
+	}
+
+	private void listVideos(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+			// initiate dispatcher
+			RequestDispatcher dispatcher = request.getRequestDispatcher(page);	
+							
+			// forward the request to JSP
+			dispatcher.forward(request, response);
+		
+	}
+
+	private void listDocuments(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+			// initiate dispatcher
+			RequestDispatcher dispatcher = request.getRequestDispatcher(page);	
+							
+			// forward the request to JSP
+			dispatcher.forward(request, response);	
 	}
 
 	private void showIndex(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {

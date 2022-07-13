@@ -56,7 +56,7 @@
                     <div class="card-body">
                       <div class="d-flex align-items-start align-items-sm-center gap-4">
                         <img
-                          src="../dashboard_assets/img/avatars/1.png"
+                          src="../dashboard_assets/img/avatars/avatar1.png"
                           alt="user-avatar"
                           class="d-block rounded"
                           height="100"
@@ -76,10 +76,10 @@
                               accept="image/png, image/jpeg"
                             />
                           </label>
-                          <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                          <!--  <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
                             <i class="bx bx-reset d-block d-sm-none"></i>
                             <span class="d-none d-sm-block">Reset</span>
-                          </button>
+                          </button>-->
 
                           <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
                         </div>
@@ -144,21 +144,28 @@
                         <div class="row">
                           <div class="mb-3 col-md-6">
                             <label for="password" class="form-label">New Password</label>
-                            <input
-                              class="form-control"
-                              type="password"
-                              id="password"
-                              name="password" 
-                              value=""
-                              required
-                            />
+                            
+                            <div class="input-group input-group-merge">
+                            	<input
+	                              class="form-control"
+	                              type="password"
+	                              id="password"
+	                              name="password"
+	                              aria-describedby="password"
+	                              required
+	                            />
+	                            <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                            </div>
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="confirm_password" class="form-label">Confirm New Password</label>
-                            <input class="form-control" type="password" name="confirm_password" id="confirm_password" value="" required/>
+                            <div class="input-group input-group-merge">
+                            	<input class="form-control" type="password" name="confirm_password" id="confirm_password"  aria-describedby="confirm_password" required/>
+                            	<span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                            </div>
                           </div>
                         </div>
-                        <button type="submit" id="deactivate-btn" class="btn btn-primary" >Update</button>
+                        <button type="submit" id="" class="btn btn-primary" >Update</button>
                       </form>
                     </div>
                   </div>

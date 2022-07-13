@@ -51,7 +51,32 @@
     <servlet-name>DashboardControllerServlet</servlet-name>
     <url-pattern>/dashboard/settings</url-pattern>
   </servlet-mapping>
+  
+   <servlet-mapping>
+    <servlet-name>DashboardControllerServlet</servlet-name>
+    <url-pattern>/dashboard/documents</url-pattern>
+  </servlet-mapping>
+  
+   <servlet-mapping>
+    <servlet-name>DashboardControllerServlet</servlet-name>
+    <url-pattern>/dashboard/videos</url-pattern>
+  </servlet-mapping>
 
+  <servlet-mapping>
+    <servlet-name>DashboardControllerServlet</servlet-name>
+    <url-pattern>/dashboard/audios</url-pattern>
+  </servlet-mapping>
+  
+   <servlet-mapping>
+    <servlet-name>DashboardControllerServlet</servlet-name>
+    <url-pattern>/dashboard/images</url-pattern>
+  </servlet-mapping>
+  
+   <servlet-mapping>
+    <servlet-name>DashboardControllerServlet</servlet-name>
+    <url-pattern>/dashboard/others</url-pattern>
+  </servlet-mapping>
+  
   <error-page>
         <error-code>404</error-code>
         <location>/error/error.jsp</location>
