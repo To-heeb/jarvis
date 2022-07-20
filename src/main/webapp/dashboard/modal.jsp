@@ -11,18 +11,22 @@
             aria-label="Close"
           ></button>
         </div>
-        <form action="" method="GET">
+        <form action="route_folder" method="GET">
         <div class="modal-body">
           <div class="row">
             <div class="col mb-3">
               <label for="nameWithTitle" class="form-label">Folder Name</label>
+              <!-- for folder_id value if there is value display it else display 0 -->
+              <input type="hidden" name="folder_id" value="<%= 0 %>">
+              <input type="hidden" name='command' value='CREATE'/>
               <input
                 type="text"
-                id="nameWithTitle"
+                id="folder_name"
                 name="folder_name"
                 class="form-control"
                 placeholder="Enter Folder Name"
                 required
+                autofocus
               />
             </div>
           </div>

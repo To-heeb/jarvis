@@ -57,7 +57,15 @@
 						  	</div>
 						</div>
 						<hr>
+						
 						<!-- If documents is empty show this -->
+						<div class="col-lg-12">
+           					<div class="d-flex justify-content-center mt-md-5 mt-5">
+           						<img src="../dashboard_assets/img/icons/unicons/bookmark.png" width="" height=""><br>
+           					</div>
+           					<h3 class="text-center mt-md-4 mt-4">No Document Yet</h3>
+						</div>
+						
 				  	 
 				  	 	<!-- else show this -->
 					</div>

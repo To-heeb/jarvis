@@ -51,6 +51,7 @@
     <link rel="stylesheet" href="../dashboard_assets/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="../dashboard_assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="../dashboard_assets/css/demo.css" />
+    <link rel="stylesheet" href="../dashboard_assets/css/sweetalert2.min.css">
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="../dashboard_assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />

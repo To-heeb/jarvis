@@ -16,6 +16,11 @@
     <servlet-name>DashboardControllerServlet</servlet-name>
     <servlet-class>com.dashboard.DashboardControllerServlet</servlet-class>
   </servlet>
+  
+  <servlet>
+    <servlet-name>FolderControllerServlet</servlet-name>
+    <servlet-class>com.dashboard.FolderControllerServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>UserControllerServlet</servlet-name>
@@ -25,6 +30,11 @@
   <servlet-mapping>
     <servlet-name>UserControllerServlet</servlet-name>
     <url-pattern>/auth/login</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>DashboardControllerServlet</servlet-name>
+    <url-pattern>/dashboard</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
@@ -75,6 +85,11 @@
    <servlet-mapping>
     <servlet-name>DashboardControllerServlet</servlet-name>
     <url-pattern>/dashboard/others</url-pattern>
+  </servlet-mapping>
+  
+   <servlet-mapping>
+    <servlet-name>FolderControllerServlet</servlet-name>
+    <url-pattern>/dashboard/route_folder</url-pattern>
   </servlet-mapping>
   
   <error-page>

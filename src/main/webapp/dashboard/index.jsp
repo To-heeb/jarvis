@@ -169,22 +169,30 @@
                 <!--/ Total Revenue -->
                 
               </div>
-              <div class="row">
+              <div class="row folder_row">
 					
 				<!-- If this is empty show this -->
-		  	 
+		  	 	<c:forEach var="folderItem" items="${folder_list}">
+					<div>
+						<p>${folderItem.folderName}</p>
+						<p>${folderItem.folderId}</p>
+						<p>${folderItem.trashStatus}</p>
+					</div>
+				</c:forEach>
+				
+				My name is <%= request.getAttribute("my_name") %>
 		  	 
 		  	 	<!-- else show this -->
               	<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Folders</span></h4>
               	<div class="col-lg-2 col-md-3 col-6 mb-3">
               		<a href=""><i class='bx bxs-star'></i><i class='bx bxs-folder' style='color:#8588ff; font-size: 155px;'></i></a>
               		<button class="btn" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              			<span class="me-xxl-1">File Name </span><i class="bx bx-dots-vertical-rounded"></i>
+              			<span class="me-xxl-1">File Name  </span><i class="bx bx-dots-vertical-rounded"></i>
 					</button>
               		<div class="dropdown-menu" aria-labelledby="cardOpt6">
 	                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-folder-open'></i> Open</a>
 	                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-star'></i> Add to Starred</a>
-	                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-edit-alt'></i> Rename</a>
+	                  <a class="dropdown-item rename_link" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#rename_modal"><i class='bx bx-edit-alt'></i> Rename</a>
 	                  <hr>
 	                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-trash'></i> Delete</a>
 	                </div>
@@ -192,25 +200,28 @@
               	<div class="col-lg-2 col-md-3 col-6 mb-3">
               		<a href=""><i class='bx bxs-star'></i><i class='bx bxs-folder' style='color:#8588ff; font-size: 155px;'></i></a>
               		<button class="btn" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              			<span class="me-xxl-1" >File Name </span><i class="bx bx-dots-vertical-rounded"></i>
+              			<span class="me-xxl-1 file_name" >File Name  </span><i class="bx bx-dots-vertical-rounded"></i>
 					</button>
               		<div class="dropdown-menu" aria-labelledby="cardOpt6">
-	                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-folder-open'></i> Open</a>
-	                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-star'></i> Add to Starred</a>
-	                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-edit-alt'></i> Rename</a>
+	                  <a class="dropdown-item" href="route_folder?command=open&id=20"><i class='bx bx-folder-open'></i> Open</a>
+	                  <!-- If starred show starred else show unstar -->
+	                  <a class="dropdown-item" href="route_folder?command=UNSTARRED&folder_id=1"><i class='bx bx-star'></i> Remove Starred</a>
+	                  <a class="dropdown-item" href="route_folder?command=STARRED&folder_id=1"><i class='bx bx-star'></i> Add to Starred</a>
+	                  <a class="dropdown-item rename_link" href="#" data-bs-toggle="modal" data-bs-target="#rename_modal"><i class='bx bx-edit-alt'></i> Rename</a>
+	                  <input type="hidden" class="folder_id" value="1">
 	                  <hr>
-	                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-trash'></i> Delete</a>
+	                  <a class="dropdown-item" href="route_folder?command=TRASH&folder_id=1"><i class='bx bx-trash'></i> Delete</a>
 	                </div>
               	</div>
               	<div class="col-lg-2 col-md-3 col-6 mb-3">
               		<a href=""><i class='bx bxs-star' style='color:#F5F5F9;'></i><i class='bx bxs-folder' style='color:#8588ff; font-size: 155px;'></i></a>
               		<button class="btn" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              			<span class="me-xxl-1">File Name </span><i class="bx bx-dots-vertical-rounded"></i>
+              			<span class="me-xxl-1">File Name  </span><i class="bx bx-dots-vertical-rounded"></i>
 					</button>
               		<div class="dropdown-menu" aria-labelledby="cardOpt6">
 	                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-folder-open'></i> Open</a>
 	                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-star'></i> Add to Starred</a>
-	                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-edit-alt'></i> Rename</a>
+	                  <a class="dropdown-item rename_link" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#rename_modal"><i class='bx bx-edit-alt'></i> Rename</a>
 	                  <hr>
 	                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-trash'></i> Delete</a>
 	                </div>
@@ -230,7 +241,7 @@
 			                  <i class="bx bx-dots-vertical-rounded"></i>
 			                </button>
 			                <div class="dropdown-menu" aria-labelledby="cardOpt6">
-			                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-show'></i> Preview</a>
+			                  <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#preview_modal"><i class='bx bx-show'></i> Preview</a>
 			                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-star'></i> Add to Starred</a>
 			                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-link-alt'></i> Get Link</a>
 			                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-cloud-download'></i> Download</a>
@@ -314,7 +325,7 @@
 			                  <i class="bx bx-dots-vertical-rounded"></i>
 			                </button>
 			                <div class="dropdown-menu" aria-labelledby="cardOpt6">
-			                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-show'></i> Preview</a>
+			                  <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#preview_modal"><i class='bx bx-show'></i> Preview</a>
 			                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-star'></i> Add to Starred</a>
 			                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-link-alt'></i> Get Link</a>
 			                  <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-cloud-download'></i> Download</a>
@@ -418,6 +429,32 @@
               </div>
             </div>
             <!-- / Content -->
+            
+            
+             <!-- Modal for renaming folder-->
+       
+        		<jsp:include page="rename_modal.jsp"></jsp:include>
+        
+       		 <!-- / Modal for renaming folder -->
+       		 
+       		 
+       		 
+             <!-- Modal for uploading files -->
+       
+        		<jsp:include page="upload_modal.jsp"></jsp:include>
+        
+       		 <!-- / Modal for uploading files -->
+       		 
+       		 <!-- Modal for previewing files -->
+       
+        		<jsp:include page="preview_modal.jsp"></jsp:include>
+        
+       		 <!-- / Modal for previewing files -->
+            
+                        
+              <!-- New Folder Created status -->
+                        
+              <input type="hidden" id="folder_status" value="<%= request.getAttribute("status") %>" />
             
             <!-- Footer -->
             	<jsp:include page="footnav.jsp"></jsp:include>
