@@ -51,7 +51,7 @@
                         <div class="card-body">
                           <h5 class="card-title text-primary">Welcome ${sessionScope.firstname} ${sessionScope.lastname}! <i class='bx bxs-hand' style="color:#F7C64B !important;"></i></h5>
                           <p class="mb-4">
-                            You have done <span class="fw-bold">72%</span> more sales today. Check your new badge in
+                            You have used <span class="fw-bold">79%</span> of your storage. <br>Check your new badge in
                             your profile.
                           </p>
 

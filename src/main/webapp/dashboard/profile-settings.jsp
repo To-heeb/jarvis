@@ -131,7 +131,7 @@
                         </div>
                         <div class="mt-2">
                           <button type="submit" class="btn btn-primary me-2">Save changes</button>
-                          <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                          <!-- <button type="reset" class="btn btn-outline-secondary">Cancel</button> -->
                         </div>
                       </form>
                     </div>
@@ -205,6 +205,26 @@
               </div>
             </div>
             <!-- / Content -->
+            
+            <!-- Modal for renaming folder-->
+       
+        		<jsp:include page="rename_modal.jsp"></jsp:include>
+        
+       		 <!-- / Modal for renaming folder -->
+       		 
+       		 
+       		 
+             <!-- Modal for uploading files -->
+       
+        		<jsp:include page="upload_modal.jsp"></jsp:include>
+        
+       		 <!-- / Modal for uploading files -->
+       		 
+       		 <!-- Modal for previewing files -->
+       
+        		<jsp:include page="preview_modal.jsp"></jsp:include>
+        
+       		 <!-- / Modal for previewing files -->
 
             <!-- Footer -->
             	<jsp:include page="footnav.jsp"></jsp:include>

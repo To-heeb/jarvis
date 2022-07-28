@@ -1,6 +1,6 @@
 		<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
-            <a href="index.jsp" class="app-brand-link">
+            <a href="home" class="app-brand-link">
               <span class="app-brand-logo demo">
                 <svg
                   width="25"
@@ -124,16 +124,16 @@
                </a>
              </li>
           </ul>
-          <div class="p-2"style="width: 100%; height: 250px; border: 5px dashed #9193FF; ">
+          <div class="p-2"style="width: 100%; height: 250px; border: 5px dashed #9193FF; border-radius: 5px; ">
           	<% String url = request.getRequestURL().toString(); %>
-          	<input type="hidden" name="base_url" id="base_url" value="<%=  url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() %>">
+          	<!-- <input type="hidden" name="base_url" id="base_url" value="<%=  url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() %>">
           	<input type="file"
           	class="filepond"
     		name="filepond" 
     		multiple 
     		data-allow-reorder="true"
     		data-max-file-size="3MB"
-    		data-max-files="3">
+    		data-max-files="3"> -->
     		
     		<form action="/dms/upload" method="POST" enctype="multipart/form-data">
     			<input type="file" name="filepond">

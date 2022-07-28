@@ -56,6 +56,10 @@
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="../dashboard_assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="../dashboard_assets/vendor/libs/apex-charts/apex-c`harts.css" />
+    <link rel="stylesheet" id="all-css-0" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css" type="text/css" media="all">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css" integrity="sha512-WvVX1YO12zmsvTpUQV8s7ZU98DnkaAokcciMZJfnNWyNzm7//QRV61t4aEr0WdIa4pe854QHLTV302vH92FSMw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../dashboard_assets/libs/dropzone/min/dropzone.min.css" />
+    <link rel="stylesheet" href="../dashboard_assets/libs/dropzone/dropzone.css" />
     
     <!-- Filepond Util -->
     <link rel="stylesheet" href="../dashboard_assets/css/filepond.min.css" />

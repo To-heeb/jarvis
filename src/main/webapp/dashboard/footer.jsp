@@ -18,9 +18,10 @@
     <script src="../dashboard_assets/vendor/libs/jquery/jquery.js"></script>
     <script src="../dashboard_assets/vendor/libs/popper/popper.js"></script>
     <script src="../dashboard_assets/vendor/js/bootstrap.js"></script>
+    <script src="../dashboard_assets/libs/dropzone/dropzone.js"></script>
     <script src="../dashboard_assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
     <script src="../dashboard_assets/js/sweetalert2.min.js"></script>
-
+	<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone-amd-module.min.js" integrity="sha512-VQQXLthlZQO00P+uEu4mJ4G4OAgqTtKG1hri56kQY1DtdLeIqhKUp9W/lllDDu3uN3SnUNawpW7lBda8+dSi7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
     <script src="../dashboard_assets/vendor/js/menu.js"></script>
     <!-- endbuild -->
 
@@ -39,33 +40,11 @@
 	    	
 	    	
 	    	// get base url
-	    	let base_url = document.getElementById("base_url").value
-	    	console.log(base_url);
+	    	//let base_url = document.getElementById("base_url").value
+	    	//console.log(base_url);
 		 	// Get a reference to the file input element
 		    const inputElement = document.querySelector('input[type="file"]');
 		
-		    // Create a FilePond instance
-		    const pond = FilePond.create(
-		    		inputElement 
-		    		
-		    		
-		    );
-		    
-		    pond.setOptions({
-		    		server: {
-		    			url: base_url + "/upload",
-		    			method : "POST",
-		    		}
-		    });
-		    
-		    pond.on('addfile', (error, file) => {
-		        if (error) {
-		            console.log('Oh no');
-		            return;
-		        }
-			
-		        console.log('File added', file);
-		    });
 		    
 		    
 		    document.querySelector(".folder_row").addEventListener("click", (event) => {
@@ -73,6 +52,8 @@
 		    	document.getElementById('folder_id').value = event.target.nextElementSibling.value;
 		    })
 			
+		    
+		    
 		    <%
 
 			// get dashboard url
@@ -80,7 +61,21 @@
 			String dashboardURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/dashboard/home";
 			
 			%>
-		
+			
+			// Dropzone instance
+			var myDropzone = new Dropzone(".dropzone", {
+		    	url : "<%= dashboardURL %>",
+		    	autoDiscover: false,
+		        paramName: "projectimage",
+		        maxFilesize: 510000000,
+		        parallelUploads: 1000,
+		        maxFiles: 5,
+		        autoProcessQueue: false,
+		        uploadMultiple: true,
+		        addRemoveLinks: true,
+		        timeout: 100000,
+		        init: function() {}
+		    })
 			
 		    // message response on file creation
 			let status = document.querySelector("#folder_status").value;
