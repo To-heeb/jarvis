@@ -77,7 +77,7 @@
 
 			// get dashboard url
 			String url = request.getRequestURL().toString();
-			String dashboardURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/dashboard/";
+			String dashboardURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/dashboard/home";
 			
 			%>
 		
@@ -199,7 +199,7 @@
         		Swal.fire({
         			  icon: 'success',
         			  title: 'Great',
-        			  text: 'Trash successfully',
+        			  text: 'Trashed successfully',
         			  showConfirmButton: false,
         			  showClass: {
       				    popup: 'animate__animated animate__fadeInDown'

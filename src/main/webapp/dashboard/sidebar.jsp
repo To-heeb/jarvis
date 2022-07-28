@@ -69,7 +69,7 @@
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item active">
-              <a href="index.jsp" class="menu-link">
+              <a href="home" class="menu-link">
                 
                 <i class='menu-icon tf-icons bx bx-cloud'></i>
                 <div data-i18n="Analytics">Cloud Drive</div>

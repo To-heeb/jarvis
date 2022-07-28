@@ -274,7 +274,7 @@ public class UserControllerServlet extends HttpServlet {
 			session.setAttribute("memory", userData.getMemoryUsage());
 			session.setAttribute("image", userData.getProfilePicture());
 			
-			response.sendRedirect(baseURL +"dashboard/");  
+			response.sendRedirect(baseURL +"dashboard/home");  
 		}else {
 			
 			sendMessage(request, response, "/auth/login.jsp", null, "error");

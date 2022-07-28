@@ -32,7 +32,7 @@ public class DashboardDbUtil {
 			myConn = dataSource.getConnection();
 
 			// create a sql statement
-			String sql = "SELECT * FROM folder WHERE folder_id = ? AND user_id = ?";
+			String sql = "SELECT * FROM folder WHERE folder_id = ? AND user_id = ? AND trash_status = '0' ";
 
 			// create prepared statement
 			myStmt = myConn.prepareStatement(sql);
@@ -40,6 +40,9 @@ public class DashboardDbUtil {
 			// set params
 			myStmt.setInt(1, theFolder.getFolderId());
 			myStmt.setInt(2, theFolder.getUserId());
+			
+			//
+			myRs = myStmt.executeQuery();
 
 			// process result set
 			while (myRs.next()) {

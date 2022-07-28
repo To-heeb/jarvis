@@ -1,3 +1,8 @@
+<%
+	//get base url
+	String url = request.getRequestURL().toString();
+	String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/dashboard/home";
+%>
 <%@ page language="java" contentType="text/html; utf-8" pageEncoding="utf-8" %>
 
 <!DOCTYPE html>
@@ -77,7 +82,7 @@
         
         <!-- You should go back to dashboard homepage, then dashboard homepage can redirect index page -->
         
-        <a href="../" class="btn btn-primary">Back to home</a>
+        <a href="<%= baseURL %>" class="btn btn-primary">Back to home</a>
         <div class="mt-3">
           <img
             src="../dashboard_assets/img/illustrations/page-misc-error-light.png"

@@ -34,7 +34,7 @@
   
   <servlet-mapping>
     <servlet-name>DashboardControllerServlet</servlet-name>
-    <url-pattern>/dashboard</url-pattern>
+    <url-pattern>/dashboard/home</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>

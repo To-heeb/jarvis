@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 
 
 
+
 /**
  * Servlet implementation class DashboardControllerServlet
  */
@@ -61,22 +62,41 @@ public class DashboardControllerServlet extends HttpServlet {
 		String servletPath = request.getServletPath();
 		response.getWriter().append( servletPath);
 		
+		String url = request.getRequestURL().toString();
+		String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";
+		
+		// come back to list file type
 		
 		if(servletPath == null) {
-			servletPath = "/dashboard";
+			servletPath = "/dashboard/home";
 		}
 		
 		switch(servletPath) {
 		case "/dashboard/recent":
-			listRecent(request, response, "recent.jsp");
+			try {
+				listRecent(request, response, "recent.jsp");
+			} catch (Exception e) {
+				//e.printStackTrace();
+				response.sendRedirect(baseURL + "dashboard/home");
+			}
 			break;
 			
 		case "/dashboard/starred":
-			listStarred(request, response, "starred.jsp");
+			try {
+				listStarred(request, response, "starred.jsp");
+			} catch (Exception e) {
+				//e.printStackTrace();
+				response.sendRedirect(baseURL + "dashboard/home");
+			}
 			break;
 			
 		case "/dashboard/trash":
-			listTrash(request, response, "trash.jsp");
+			try {
+				listTrash(request, response, "trash.jsp");
+			} catch (Exception e) {
+				//e.printStackTrace();
+				response.sendRedirect(baseURL + "dashboard/home");
+			}
 			break;
 			
 		case "/dashboard/folders":
@@ -107,12 +127,24 @@ public class DashboardControllerServlet extends HttpServlet {
 			listOthers(request, response, "others.jsp");
 			break;
 			
-		case "/dashboard":
-			showIndex(request, response, "index.jsp");
+		case "/dashboard/home":
+			try {
+				showIndex(request, response, "home.jsp");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+				
+				 response.sendRedirect(baseURL + "auth/login.jsp");
+			}
 			break;
 			
 		default:
-			
+				try {
+					showIndex(request, response, "home.jsp");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			break;
 		}
 		
@@ -159,25 +191,28 @@ public class DashboardControllerServlet extends HttpServlet {
 	}
 
 	
-	private void showIndex(HttpServletRequest request, HttpServletResponse response, String string) throws IOException {
-		// TODO Auto-generated method stub
-		//Step 1: set the content type
-				response.setContentType("text/html");
-				
-				//Step 2: get the  printwriter
-				PrintWriter out = response.getWriter();
-				
-				//Step 3: read configuration params
-				ServletContext context = getServletContext(); //inherited from HttpServlet
-				String maxCartSize = context.getInitParameter("max-shopping-cart-size");
-				String teamName = context.getInitParameter("project-team-name");
-				
-				//Step 4: generate HTML content
-				out.println("<html><body>");
-				//out.println("Max cart: "+ maxCartSize);
-				out.println("<br><br>");
-				out.println("Team Name: "+ "Toheeb");
-				out.println("</body></html>");
+	private void showIndex(HttpServletRequest request, HttpServletResponse response, String page) throws Exception {
+			
+			// Access session
+			HttpSession session = request.getSession(true);
+			
+			//get user id
+			int userId = (int) session.getAttribute("id");
+			
+			Folder theFolder = new Folder(0, userId);
+			
+			// get students from db util
+			List<Folder> folders =  dashboardDbUtil.getFolders(theFolder);
+			
+			//send variable from here to view
+			request.setAttribute("folder_list", folders);
+			request.setAttribute("my_name", "Toheeb");
+			
+			// initiate dispatcher
+			RequestDispatcher dispatcher = request.getRequestDispatcher(page);	
+							
+			// forward the request to JSP
+			dispatcher.forward(request, response);	
 	}
 	
 	public void sendIndex (HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -192,7 +227,22 @@ public class DashboardControllerServlet extends HttpServlet {
 			dispatcher.forward(request, response);
 	}
 
-	private void listStarred(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+	private void listStarred(HttpServletRequest request, HttpServletResponse response, String page) throws Exception {
+			
+			// Access session
+			HttpSession session = request.getSession(true);
+			
+			//get user id
+			int userId = (int) session.getAttribute("id");
+			
+			Folder theFolder = new Folder(0, userId);
+			
+			// get students from db util
+			List<Folder> folders =  dashboardDbUtil.getFolders(theFolder);
+			
+			//send variable from here to view
+			request.setAttribute("folder_list", folders);
+			
 		 	// initiate dispatcher
 			RequestDispatcher dispatcher = request.getRequestDispatcher(page);				
 							
@@ -208,7 +258,22 @@ public class DashboardControllerServlet extends HttpServlet {
 			dispatcher.forward(request, response);
 	}
 
-	private void listTrash(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+	private void listTrash(HttpServletRequest request, HttpServletResponse response, String page) throws Exception {
+		
+		    // Access session
+			HttpSession session = request.getSession(true);
+			
+			//get user id
+			int userId = (int) session.getAttribute("id");
+			
+			Folder theFolder = new Folder(0, userId);
+			
+			// get students from db util
+			List<Folder> folders =  dashboardDbUtil.getFolders(theFolder);
+			
+			//send variable from here to view
+			request.setAttribute("folder_list", folders);
+				
 			// initiate dispatcher
 			RequestDispatcher dispatcher = request.getRequestDispatcher(page);
 			
@@ -216,7 +281,21 @@ public class DashboardControllerServlet extends HttpServlet {
 			dispatcher.forward(request, response);
 	}
 
-	private void listRecent(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+	private void listRecent(HttpServletRequest request, HttpServletResponse response, String page) throws Exception {
+		// Access session
+		HttpSession session = request.getSession(true);
+		
+		//get user id
+		int userId = (int) session.getAttribute("id");
+		
+		Folder theFolder = new Folder(0, userId);
+		
+		// get students from db util
+		List<Folder> folders =  dashboardDbUtil.getFolders(theFolder);
+		
+		//send variable from here to view
+		request.setAttribute("folder_list", folders);
+		
 		//	initiate dispatcher
 		RequestDispatcher dispatcher = request.getRequestDispatcher(page);
 		

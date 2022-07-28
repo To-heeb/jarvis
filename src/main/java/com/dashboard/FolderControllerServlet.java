@@ -105,7 +105,7 @@ public class FolderControllerServlet extends HttpServlet {
 		
 		if(folderId.isEmpty()) {
 			// return to dashboard and throw an error
-			sendMessage(request, response, "/dashboard/", null, "failed");
+			sendMessage(request, response, "/dashboard/home", null, "failed");
 			return;
 		}
 		
@@ -125,7 +125,7 @@ public class FolderControllerServlet extends HttpServlet {
 			status = folderDbUtil.untrashFolder(newFolder);
 			
 			// if folder successfully created redirect to dashboard with success message else send error to dashboard
-			sendMessage(request, response, "/dashboard/", null, status);
+			sendMessage(request, response, "/dashboard/home", null, status);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -138,7 +138,7 @@ public class FolderControllerServlet extends HttpServlet {
 		
 		if(folderId.isEmpty()) {
 			// return to dashboard and throw an error
-			sendMessage(request, response, "/dashboard/", null, "failed");
+			sendMessage(request, response, "/dashboard/home", null, "failed");
 			return;
 		}
 		
@@ -158,7 +158,7 @@ public class FolderControllerServlet extends HttpServlet {
 			status = folderDbUtil.trashFolder(newFolder);
 			
 			// if folder successfully created redirect to dashboard with success message else send error to dashboard
-			sendMessage(request, response, "/dashboard/", null, status);
+			sendMessage(request, response, "/dashboard/home", null, status);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -170,7 +170,7 @@ public class FolderControllerServlet extends HttpServlet {
 		
 		if(folderId.isEmpty()) {
 			// return to dashboard and throw an error
-			sendMessage(request, response, "/dashboard/", null, "failed");
+			sendMessage(request, response, "/dashboard/home", null, "failed");
 			return;
 		}
 		
@@ -190,7 +190,7 @@ public class FolderControllerServlet extends HttpServlet {
 			status = folderDbUtil.unstarFolder(newFolder);
 			
 			// if folder successfully created redirect to dashboard with success message else send error to dashboard
-			sendMessage(request, response, "/dashboard/", null, status);
+			sendMessage(request, response, "/dashboard/home", null, status);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -204,7 +204,7 @@ public class FolderControllerServlet extends HttpServlet {
 		
 		if(folderId.isEmpty()) {
 			// return to dashboard and throw an error
-			sendMessage(request, response, "/dashboard/", null, "failed");
+			sendMessage(request, response, "/dashboard/home", null, "failed");
 			return;
 		}
 		
@@ -224,7 +224,7 @@ public class FolderControllerServlet extends HttpServlet {
 			status = folderDbUtil.starFolder(newFolder);
 			
 			// if folder successfully created redirect to dashboard with success message else send error to dashboard
-			sendMessage(request, response, "/dashboard/", null, status);
+			sendMessage(request, response, "/dashboard/home", null, status);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -239,7 +239,7 @@ public class FolderControllerServlet extends HttpServlet {
 		
 		if(folderName.isEmpty()) {
 			// return to dashboard and throw an error
-			sendMessage(request, response, "/dashboard/", null, "error");
+			sendMessage(request, response, "/dashboard/home", null, "error");
 			return;
 		}
 		
@@ -259,7 +259,7 @@ public class FolderControllerServlet extends HttpServlet {
 			status = folderDbUtil.updateFolder(newFolder);
 			
 			// if folder successfully created redirect to dashboard with success message else send error to dashboard
-			sendMessage(request, response, "/dashboard/", null, status);
+			sendMessage(request, response, "/dashboard/home", null, status);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -279,7 +279,7 @@ public class FolderControllerServlet extends HttpServlet {
 		// validate folder name here
 		if(folderName.isEmpty()) {
 			// return to dashboard and throw an error
-			sendMessage(request, response, "/dashboard/", null, "error");
+			sendMessage(request, response, "/dashboard/home", null, "error");
 			return;
 		}
 		
@@ -297,7 +297,7 @@ public class FolderControllerServlet extends HttpServlet {
 		String status = folderDbUtil.createFolder(newFolder);
 		
 		// if folder successfully created redirect to dashboard with success message else send error to dashboard
-		sendMessage(request, response, "/dashboard/", null, status);
+		sendMessage(request, response, "/dashboard/home", null, status);
 	}
 
 	/**
