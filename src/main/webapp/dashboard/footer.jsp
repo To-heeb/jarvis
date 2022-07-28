@@ -217,7 +217,7 @@
         		Swal.fire({
         			  icon: 'success',
         			  title: 'Great',
-        			  text: 'Untrash successfully',
+        			  text: 'Restored successfully',
         			  showConfirmButton: false,
         			  showClass: {
       				    popup: 'animate__animated animate__fadeInDown'

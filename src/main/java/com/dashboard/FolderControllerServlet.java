@@ -78,8 +78,8 @@ public class FolderControllerServlet extends HttpServlet {
 			case "RENAME":
 				renameFolder(request, response);
 				break;
-			case "RESTORE":
-				//restoreFolder(request, response);
+			case "DELETE":
+				//deleteFolder(request, response);
 				break;
 			case "STARRED":
 				starFolder(request, response);

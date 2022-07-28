@@ -100,7 +100,20 @@ public class DashboardControllerServlet extends HttpServlet {
 			break;
 			
 		case "/dashboard/folders":
-			listFolders(request, response, "folders.jsp");
+			try {
+				listFolders(request, response, "folders.jsp");
+			} catch (Exception e) {
+				//e.printStackTrace();
+				response.sendRedirect(baseURL + "dashboard/home");
+			}
+			break;
+		case "/dashboard/folder":
+			try {
+				showFolder(request, response, "folder_page.jsp");
+			} catch (Exception e) {
+				//e.printStackTrace();
+				response.sendRedirect(baseURL + "dashboard/home");
+			}
 			break;
 			
 		case "/dashboard/settings":
@@ -147,6 +160,57 @@ public class DashboardControllerServlet extends HttpServlet {
 				}
 			break;
 		}
+		
+	}
+
+	private void showFolder(HttpServletRequest request, HttpServletResponse response, String page) throws Exception {
+			
+			// Access session
+			HttpSession session = request.getSession(true);
+			
+			//get user id
+			int userId = (int) session.getAttribute("id");
+			
+			String folderIdString = request.getParameter("folder").trim();
+			
+			String parentFolderIdString = request.getParameter("parent_folder").trim();
+			
+			if(folderIdString.isEmpty() || parentFolderIdString.isEmpty()) {
+				// return to dashboard
+				String url = request.getRequestURL().toString();
+				String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";
+				response.sendRedirect(baseURL + "dashboard/home");
+				return;
+			}
+			
+			int folderId = Integer.parseInt(request.getParameter("folder").trim());
+
+			int parentFolderId = Integer.parseInt(request.getParameter("parent_folder").trim());
+			
+			Folder theFolder = new Folder(folderId, parentFolderId, userId);
+			
+			// get folder data from db util
+			Folder folderData =  dashboardDbUtil.getFolder(theFolder);
+			
+			// get folders from db util
+			List<Folder> folderList =  dashboardDbUtil.getFolders(theFolder);
+			
+			File theFile = new File(parentFolderId, userId);
+			
+			List<File> fileList =  dashboardDbUtil.getFiles(theFile);
+			
+			//List<Folder> folderFiles =  dashboardDbUtil.getFiles(theFolder);
+			
+			//send variable from here to view
+			request.setAttribute("folder_data", folderData);
+			request.setAttribute("folder_list", folderList);
+			request.setAttribute("file_list", fileList);
+					
+			// initiate dispatcher
+			RequestDispatcher dispatcher = request.getRequestDispatcher(page);	
+							
+			// forward the request to JSP
+			dispatcher.forward(request, response);
 		
 	}
 
@@ -201,12 +265,17 @@ public class DashboardControllerServlet extends HttpServlet {
 			
 			Folder theFolder = new Folder(0, userId);
 			
-			// get students from db util
+			// get folders from db util
 			List<Folder> folders =  dashboardDbUtil.getFolders(theFolder);
+			
+			File theFile = new File(0, userId);
+			
+			// get files from db util
+			List<File> fileList =  dashboardDbUtil.getFiles(theFile);
 			
 			//send variable from here to view
 			request.setAttribute("folder_list", folders);
-			request.setAttribute("my_name", "Toheeb");
+			request.setAttribute("file_list", fileList);
 			
 			// initiate dispatcher
 			RequestDispatcher dispatcher = request.getRequestDispatcher(page);	
@@ -238,10 +307,10 @@ public class DashboardControllerServlet extends HttpServlet {
 			Folder theFolder = new Folder(0, userId);
 			
 			// get students from db util
-			List<Folder> folders =  dashboardDbUtil.getFolders(theFolder);
+			List<Folder> folders =  dashboardDbUtil.getStarredFolders(theFolder);
 			
 			//send variable from here to view
-			request.setAttribute("folder_list", folders);
+			request.setAttribute("starred_folder_list", folders);
 			
 		 	// initiate dispatcher
 			RequestDispatcher dispatcher = request.getRequestDispatcher(page);				
@@ -250,7 +319,22 @@ public class DashboardControllerServlet extends HttpServlet {
 			dispatcher.forward(request, response);
 	}
 
-	private void listFolders(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+	private void listFolders(HttpServletRequest request, HttpServletResponse response, String page) throws Exception {
+		
+			// Access session
+			HttpSession session = request.getSession(true);
+			
+			//get user id
+			int userId = (int) session.getAttribute("id");
+			
+			Folder theFolder = new Folder(0, userId);
+			
+			// get students from db util
+			List<Folder> folders =  dashboardDbUtil.getFolders(theFolder);
+			
+			//send variable from here to view
+			request.setAttribute("folder_list", folders);
+					
 			// initiate dispatcher
 			RequestDispatcher dispatcher = request.getRequestDispatcher(page);	
 					
@@ -269,10 +353,10 @@ public class DashboardControllerServlet extends HttpServlet {
 			Folder theFolder = new Folder(0, userId);
 			
 			// get students from db util
-			List<Folder> folders =  dashboardDbUtil.getFolders(theFolder);
+			List<Folder> folders =  dashboardDbUtil.getTrashedFolders(theFolder);
 			
 			//send variable from here to view
-			request.setAttribute("folder_list", folders);
+			request.setAttribute("trash_folder_list", folders);
 				
 			// initiate dispatcher
 			RequestDispatcher dispatcher = request.getRequestDispatcher(page);

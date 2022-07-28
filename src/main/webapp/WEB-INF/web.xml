@@ -44,6 +44,11 @@
   
   <servlet-mapping>
     <servlet-name>DashboardControllerServlet</servlet-name>
+    <url-pattern>/dashboard/folder</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>DashboardControllerServlet</servlet-name>
     <url-pattern>/dashboard/trash</url-pattern>
   </servlet-mapping>
   

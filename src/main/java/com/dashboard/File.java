@@ -1,5 +1,7 @@
 package com.dashboard;
 
+import java.util.Date;
+
 public class File {
 
 	private int id;
@@ -10,15 +12,15 @@ public class File {
 	private String fileType;
 	private String fileSize;
 	private String fileHash;
-	private String updatedAt;
-	private String createdAt;
-	private boolean favStatus;
-	private boolean trashStatus;
+	private Date updatedAt;
+	private Date createdAt;
+	private int favStatus;
+	private int trashStatus;
 	private boolean status;
 	
 	
 	public File(int id, int folderId, int userId, String displayName, String newName, String fileType, String fileSize,
-			String fileHash, String updatedAt, String createdAt, boolean favStatus, boolean trashStatus,
+			String fileHash, Date updatedAt, Date createdAt, int favStatus, int trashStatus,
 			boolean status) {
 		super();
 		this.id = id;
@@ -34,6 +36,27 @@ public class File {
 		this.favStatus = favStatus;
 		this.trashStatus = trashStatus;
 		this.status = status;
+	}
+	
+	public File(int id, int folderId, String displayName, String newName, String fileType, String fileSize,
+			String fileHash, int favStatus, int trashStatus, Date updatedAt, Date createdAt) {
+		super();
+		this.id = id;
+		this.folderId = folderId;
+		this.displayName = displayName;
+		this.newName = newName;
+		this.fileType = fileType;
+		this.fileSize = fileSize;
+		this.fileHash = fileHash;
+		this.updatedAt = updatedAt;
+		this.createdAt = createdAt;
+		this.favStatus = favStatus;
+		this.trashStatus = trashStatus;
+	}
+
+	public File(int folderId, int userId) {
+		this.folderId = folderId;
+		this.userId = userId;
 	}
 
 	public int getId() {
@@ -100,35 +123,35 @@ public class File {
 		this.fileHash = fileHash;
 	}
 	
-	public String getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return updatedAt;
 	}
 	
-	public void setUpdatedAt(String updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 	
-	public String getCreatedAt() {
+	public Date getCreatedAt() {
 		return createdAt;
 	}
 	
-	public void setCreatedAt(String createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 	
-	public boolean isFavStatus() {
+	public int getFavStatus() {
 		return favStatus;
 	}
 	
-	public void setFavStatus(boolean favStatus) {
+	public void setFavStatus(int favStatus) {
 		this.favStatus = favStatus;
 	}
 	
-	public boolean isTrashStatus() {
+	public int getTrashStatus() {
 		return trashStatus;
 	}
 	
-	public void setTrashStatus(boolean trashStatus) {
+	public void setTrashStatus(int trashStatus) {
 		this.trashStatus = trashStatus;
 	}
 	

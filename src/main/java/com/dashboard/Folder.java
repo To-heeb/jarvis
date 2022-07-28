@@ -6,6 +6,7 @@ public class Folder {
 
 	private int id;
 	private int folderId;
+	private int parentFolderId;
 	private int userId;
 	private String folderName;
 	private Date updatedAt;
@@ -40,6 +41,12 @@ public class Folder {
 		this.folderId = folder_id;
 		this.userId = user_id;
 	}
+	
+	public Folder(int folder_id, int parent_folder_id, int user_id) {
+		this.folderId = folder_id;
+		this.userId = user_id;
+		this.parentFolderId = parent_folder_id;
+	}
 
 	public int getId() {
 		return id;
@@ -52,7 +59,15 @@ public class Folder {
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
-
+	
+	public void setParentFolderId(int parentFolderId) {
+		this.parentFolderId = parentFolderId;
+	}
+	
+	public int getParentFolderId() {
+		return parentFolderId;
+	}
+	
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}

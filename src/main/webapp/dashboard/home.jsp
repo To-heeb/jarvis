@@ -173,7 +173,7 @@
 					
 				<!-- If this is empty show this -->
 		  			<!-- Display image here -->
-		  			<!-- if folder_list is empty and if file_list is empty  then do this-->
+		  			<!-- if folder_list is empty and if file_list is empty then do this-->
 	  			<c:if test="${fn:length(folder_list) < 1}">
 	  				<div class="col-lg-12">
        					<div class="d-flex justify-content-center mt-md-5 mt-5">
@@ -185,7 +185,7 @@
 	  			</c:if>
 		  	 
 		  	 	<!-- else show this -->
-              	<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Folders</span></h4>
+              	<c:if test="${fn:length(folder_list) > 1}"><h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Folders</span></h4></c:if>
               	<c:forEach var="folderItem" items="${folder_list}">
 					<!-- <div>
 						<p>${folderItem.folderName}</p>
@@ -194,12 +194,12 @@
 					</div> -->
 				
 	              	<div class="col-lg-2 col-md-3 col-6 mb-3">
-	              		<a href="${folderItem.id}"><c:if test="${folderItem.favStatus == 1}" ><i class='bx bxs-star'></i></c:if><c:if test="${folderItem.favStatus != 1}" ><i class='bx bxs-star' style="color: #F5F5F9;"></i></c:if><i class='bx bxs-folder' style='color:#8588ff; font-size: 155px;'></i></a>
+	              		<a href="folder?folder=${folderItem.id}&parent_folder=${folderItem.folderId}"><c:if test="${folderItem.favStatus == 1}" ><i class='bx bxs-star'></i></c:if><c:if test="${folderItem.favStatus != 1}" ><i class='bx bxs-star' style="color: #F5F5F9;"></i></c:if><i class='bx bxs-folder' style='color:#8588ff; font-size: 155px;'></i></a>
 	              		<button class="btn" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	              			<span class="me-xxl-1  file_name" >${folderItem.folderName}  </span><i class="bx bx-dots-vertical-rounded"></i>
 						</button>
 	              		<div class="dropdown-menu" aria-labelledby="cardOpt6">
-		                  <a class="dropdown-item" href="route_folder?command=open&id=20"><i class='bx bx-folder-open'></i> Open</a>
+		                  <a class="dropdown-item" href="folder?folder=${folderItem.id}&parent_folder=${folderItem.folderId}"><i class='bx bx-folder-open'></i> Open</a>
 		                  <!-- If starred show starred else show unstar -->
 		                  <c:if test="${folderItem.favStatus == 1}" ><a class="dropdown-item" href="route_folder?command=UNSTARRED&folder_id=${folderItem.id}"><i class='bx bx-star'></i> Remove Starred</a></c:if>
 		                  <c:if test="${folderItem.favStatus != 1}" ><a class="dropdown-item" href="route_folder?command=STARRED&folder_id=${folderItem.id}"><i class='bx bx-star'></i> Add to Starred</a></c:if>
