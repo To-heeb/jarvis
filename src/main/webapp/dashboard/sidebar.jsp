@@ -125,19 +125,22 @@
              </li>
           </ul>
           <div class="p-2"style="width: 100%; height: 250px; border: 5px dashed #9193FF; border-radius: 5px; ">
-          	<% String url = request.getRequestURL().toString(); %>
-          	<!-- <input type="hidden" name="base_url" id="base_url" value="<%=  url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() %>">
-          	<input type="file"
-          	class="filepond"
-    		name="filepond" 
-    		multiple 
-    		data-allow-reorder="true"
-    		data-max-file-size="3MB"
-    		data-max-files="3"> -->
-    		
-    		<form action="/dms/upload" method="POST" enctype="multipart/form-data">
-    			<input type="file" name="filepond">
-    			<input type="submit" value="submit">
-    		</form>
+          	<% 
+          		String folderId = request.getParameter("folder");
+          		if(folderId == null || folderId.isEmpty()){
+          			folderId = "0";
+          		}
+          	%>
+    		<input type="hidden" id="folder_id_ajax" name="folder_id_ajax" value="<%= folderId %>">
+    		<div class="dropzone" >
+                <div class="dz-message needsclick">
+                    <div class="mb-3">
+                        <i class="fas fa-upload text-muted"></i>
+
+                    </div>
+
+                    <p style="font-size: 12px;">Drop files here or click to upload.</p>
+                </div>
+            </div>
           </div>
         </aside>

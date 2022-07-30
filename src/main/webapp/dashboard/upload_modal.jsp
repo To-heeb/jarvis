@@ -14,7 +14,7 @@
          <div class="modal-body">
            <div class="row">
              <div class="col-12">
-                 <div class="dropzone" id="dropzone">
+                 <div class="dropzone modal_dropzone" >
                      <div class="dz-message needsclick">
                          <div class="mb-3">
                              <i class="fas fa-upload text-muted"></i>
@@ -24,7 +24,7 @@
                          <p style="font-size: 12px;">Drop files here or click to upload.</p>
                      </div>
                  </div>
-                 <span style="font-size:10px;">(Maximum of 5 Files and 50MB for each)</span>
+                 <span style="font-size:10px;"></span>
              </div>
            </div>
          </div>
@@ -32,7 +32,7 @@
            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
              Close
            </button>
-           <button type="button" class="btn btn-primary">Save changes</button>
+           <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
          </div>
        </div>
      </div>

@@ -5,6 +5,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Random;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -13,13 +19,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 /**
  * Servlet implementation class TempUploadControllerServlet
  */
 @WebServlet(name ="TempUploadControllerServlet",asyncSupported = true,  urlPatterns = {"/upload"})
-@MultipartConfig
+@MultipartConfig(
+		  fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+		  maxFileSize = 1024 * 1024 * 10,      // 10 MB
+		  maxRequestSize = 1024 * 1024 * 100   // 100 MB
+		)	
 public class TempUploadControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -54,33 +65,109 @@ public class TempUploadControllerServlet extends HttpServlet {
 		
 		//Step 2: get the printwriter
 		PrintWriter out = response.getWriter();
-				
-				
-		// Create path components to save the file
-		Part filePart = request.getPart("filepond");
+					
+		// Create parh components to save the file
+		Part filePart = request.getPart("uploaded_file");
 		
+		//fileName will be the displayname
 		String fileName = filePart.getSubmittedFileName();
 		
-		long fileSize = filePart.getSize();
+		// Access session
+		HttpSession session = request.getSession(true);
+		
+		//get user id
+		int userId = (int) session.getAttribute("id");
+		
+		//get folder id
+		int folder_id = Integer.parseInt(request.getParameter("folder_id")); 
+		
+		//generate random characters
+		String randomChars = generateRandomChars(
+	            "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", 17);
+		
+		//get file path
+		Path filePath = Paths.get(getServletContext().getRealPath("/"+"file_upload" +File.separator + fileName));
+		
+		File file = new File(getServletContext().getRealPath("/"+"file_upload" +File.separator + fileName));
+		
+		//get file type
+		String fileType = Files.probeContentType(file.toPath().toAbsolutePath());
+		
+		//get file extension
+		String fileExtension  = fileName.substring(fileName.lastIndexOf("."));
+		
+		//get file size
+		int fileSize = (int) filePart.getSize();
+		
+		//get file new name
+		String fileNewName  = randomChars+fileExtension;
+		
+		//get timestamp
+		Date date = new Date();
+		Timestamp timestamp = new Timestamp(date.getTime());
+		String currentTimeStamp = Integer.toString((int) timestamp.getTime());
+		
+		//get file hash
+		String fileHash =  currentTimeStamp+generateRandomChars(
+	            "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", 10);
+		
+		//Encrypt files here before upload
+		//
+		
+		for (Part part : request.getParts()) {
+		      part.write(getServletContext().getRealPath("/"+"file_upload" +File.separator + fileName));
+		    }
+				
+		//Insert file data into the database
+		
+	   
+		
+		/*long fileSize = filePart.getSize();
 	     
 	    String  path = getServletContext().getRealPath("/"+"file_upload" +File.separator + fileName);
 	    
 	    InputStream inputStream = filePart.getInputStream();
 	    
-	    boolean upload_status = uploadFile(inputStream, path);
+	    boolean upload_status = uploadFile(request, path);*/
+	    
+	    boolean upload_status = true;
 	    
 	    if(upload_status) {
-	    	out.println("File Upload to this directory: "+path);
+	    	out.println("File Upload to this directory: "+fileName+' ' + fileType + ' '+fileExtension+' ' + fileSize + ' ' + fileNewName + ' '+ currentTimeStamp + ' '+fileHash);
 	    }else {
 	    	out.println("error");
 	    }
-		
-		
-	     
-	     
+		   
 	}
 	
-	public boolean uploadFile(InputStream inputStream, String path) {
+	public String generateRandomChars(String candidateChars, int length) {
+		StringBuilder sb = new StringBuilder();
+	    Random random = new Random();
+	    for (int i = 0; i < length; i++) {
+	        sb.append(candidateChars.charAt(random.nextInt(candidateChars
+	                .length())));
+	    }
+
+	    return sb.toString();
+	}
+	
+	public boolean uploadFile(HttpServletRequest request, String fileName) {
+		boolean upload_status = false;
+		
+		try {
+			
+			
+			
+			upload_status = true;
+			
+		}catch(Exception exc){
+			exc.printStackTrace();
+		}
+		return upload_status;
+	} 
+	
+	
+	public boolean uploadFileDumped(InputStream inputStream, String path) {
 		boolean upload_status = false;
 		
 		try {

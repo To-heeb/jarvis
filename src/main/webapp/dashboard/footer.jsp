@@ -6,11 +6,6 @@
 	       Upload
 	    </div>
        </button>
-       <div class="dropdown-menu" aria-labelledby="cardOpt6">
-         <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-show'></i> Preview</a>
-         <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-star'></i> Add to Starred</a>
-         <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-link-alt'></i> Get Link</a>
-       </div>
      </div>
 
     <!-- Core JS -->
@@ -45,15 +40,103 @@
 		 	// Get a reference to the file input element
 		    const inputElement = document.querySelector('input[type="file"]');
 		
+		 	
+		 	// Dropzone instance
+			var myDropzone = new Dropzone(".dropzone", {
+		    	url : "/dms/upload",
+		    	autoDiscover: false,
+		        paramName: "uploaded_file",
+		        maxFilesize: 1000,
+		        parallelUploads: 100,
+		        maxFiles: 1,
+		        autoProcessQueue: true,
+		        uploadMultiple: false,
+		        addRemoveLinks: true,
+		        createImageThumbnails: true,
+		        timeout: 100000,
+		        init: function() {
+	        	  this.on("sending", function(file, xhr, formData) {
+	        		  // append folder_id here
+	        		  var folder_id = document.querySelector("#folder_id_ajax").value;
+	        		  console.log(folder_id)
+	        		  formData.append("folder_id", folder_id);
+	        		  
+	        		 Swal.fire({
+	                        html: "Encrypting files...",
+	                        allowOutsideClick: false,
+	                        didOpen: () => {
+	                            Swal.showLoading();
+	                        },
+	                    });
+	        	    });
+	        	    this.on("success", function(files, response) {
+	        	    	console.log(response)
+	        	    	 //var obj = jQuery.parseJSON(response);
+	        	    	 //console.log(obj);
+	        	    	if (obj.status == "success") {
+	                        console.log(obj.message)
+	                        form.classList.add("d-none");
+	                        Swal.fire({
+	                            icon: "success",
+	                            title: "Great!!",
+	                            allowOutsideClick: false,
+	                            text: "Document Submitted and Email Successfully Sent",
+	                        }).then((result) => {
+	                          location.reload();
+	                        });
+	                    } else {
+	                        console.log(obj.message)
+	                        Swal.fire({
+	                            icon: "error",
+	                            title: "Oops...",
+	                            allowOutsideClick: false,
+	                            //html: obj.status,
+	                            html: obj.message
+	                        });
+	                    }
+	        	    });
+	        	    this.on("error", function(files, response) {
+	        	    	Swal.fire({
+	                        icon: "error",
+	                        title: "Oops...",
+	                        allowOutsideClick: false,
+	                        text: "Something went wrong!",
+	                    }).then((result) => {
+	                        /* Read more about isConfirmed, isDenied below */
+	                        if (result.isConfirmed) {
+	                            location.reload();
+	                        }
+	                    });
+	        	    });
+		        }
+		    })
+			
+			
+			var myDropzone = new Dropzone(".modal_dropzone", {
+				url : "/dms/upload",
+		    	autoDiscover: false,
+		        paramName: "uploaded_file",
+		        maxFilesize: 1000,
+		        parallelUploads: 100,
+		        maxFiles: 1,
+		        autoProcessQueue: true,
+		        uploadMultiple: false,
+		        addRemoveLinks: true,
+		        createImageThumbnails: true,
+		        timeout: 100000,
+		        init: function() {
+		        	
+		        }
+		    })
+		 
 		    
-		    
+		 	// make value for renaming folder show in form field
 		    document.querySelector(".folder_row").addEventListener("click", (event) => {
 		    	document.getElementById('rename_modal_value').value = event.target.parentElement.previousElementSibling.firstElementChild.innerHTML; 
 		    	document.getElementById('folder_id').value = event.target.nextElementSibling.value;
 		    })
 			
-		    
-		    
+		      
 		    <%
 
 			// get dashboard url
@@ -61,21 +144,7 @@
 			String dashboardURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/dashboard/home";
 			
 			%>
-			
-			// Dropzone instance
-			var myDropzone = new Dropzone(".dropzone", {
-		    	url : "<%= dashboardURL %>",
-		    	autoDiscover: false,
-		        paramName: "projectimage",
-		        maxFilesize: 510000000,
-		        parallelUploads: 1000,
-		        maxFiles: 5,
-		        autoProcessQueue: false,
-		        uploadMultiple: true,
-		        addRemoveLinks: true,
-		        timeout: 100000,
-		        init: function() {}
-		    })
+	
 			
 		    // message response on file creation
 			let status = document.querySelector("#folder_status").value;
