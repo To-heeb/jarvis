@@ -8,10 +8,12 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Random;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -21,6 +23,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import javax.sql.DataSource;
+
+import com.dashboard.FileDbUtil;
+import com.dashboard.Filex;
+import org.json.JSONObject;
 
 /**
  * Servlet implementation class TempUploadControllerServlet
@@ -33,6 +40,28 @@ import javax.servlet.http.Part;
 		)	
 public class TempUploadControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	
+	private FileDbUtil fileDbUtil;
+	
+	// Define datasource and connection pool for Resource Injection
+	@Resource(name="jdbc/dms_db")
+	private DataSource dataSource;
+	
+	@Override
+	public void init() throws ServletException {
+		// TODO Auto-generated method stub
+		super.init();
+		
+		// create folder db util ... and pass in the conn pool / datasource
+		try {
+			fileDbUtil = new FileDbUtil(dataSource);
+		}
+		catch(Exception exc){
+			throw new ServletException(exc);
+		}
+	}
+	
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -60,6 +89,13 @@ public class TempUploadControllerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		//Step 1: set the content type
 		response.setContentType("text/html");
 		
@@ -85,8 +121,11 @@ public class TempUploadControllerServlet extends HttpServlet {
 		String randomChars = generateRandomChars(
 	            "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", 17);
 		
+		//get file path string
+		String filePathString = getServletContext().getRealPath("/"+"file_upload" +File.separator + fileName);
+		
 		//get file path
-		Path filePath = Paths.get(getServletContext().getRealPath("/"+"file_upload" +File.separator + fileName));
+		Path filePath = Paths.get(filePathString);
 		
 		File file = new File(getServletContext().getRealPath("/"+"file_upload" +File.separator + fileName));
 		
@@ -97,7 +136,7 @@ public class TempUploadControllerServlet extends HttpServlet {
 		String fileExtension  = fileName.substring(fileName.lastIndexOf("."));
 		
 		//get file size
-		int fileSize = (int) filePart.getSize();
+		String fileSize = Integer.toString((int) filePart.getSize());
 		
 		//get file new name
 		String fileNewName  = randomChars+fileExtension;
@@ -120,6 +159,28 @@ public class TempUploadControllerServlet extends HttpServlet {
 				
 		//Insert file data into the database
 		
+		//create file object here
+		Filex newFile = new Filex(userId, folder_id, fileName, fileNewName, fileType, fileSize, fileHash, filePathString);
+		
+		boolean upload_status;
+		try {
+			upload_status = fileDbUtil.createFile(newFile);
+			JSONObject json = new JSONObject();
+			if(upload_status) {
+				
+					json.put("status", "success");
+					json.put("message", "file successfully uploaded");
+		    	out.println(json);
+		    }else {
+		    	json.put("status", "error");
+				json.put("message", "file upload error");
+		    	out.println(json);
+		    }
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	   
 		
 		/*long fileSize = filePart.getSize();
@@ -130,13 +191,7 @@ public class TempUploadControllerServlet extends HttpServlet {
 	    
 	    boolean upload_status = uploadFile(request, path);*/
 	    
-	    boolean upload_status = true;
-	    
-	    if(upload_status) {
-	    	out.println("File Upload to this directory: "+fileName+' ' + fileType + ' '+fileExtension+' ' + fileSize + ' ' + fileNewName + ' '+ currentTimeStamp + ' '+fileHash);
-	    }else {
-	    	out.println("error");
-	    }
+	    //boolean upload_status = true;
 		   
 	}
 	

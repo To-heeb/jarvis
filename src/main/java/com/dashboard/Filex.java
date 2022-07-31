@@ -2,7 +2,7 @@ package com.dashboard;
 
 import java.util.Date;
 
-public class File {
+public class Filex {
 
 	private int id;
 	private int folderId;
@@ -12,6 +12,7 @@ public class File {
 	private String fileType;
 	private String fileSize;
 	private String fileHash;
+	private String filePath;
 	private Date updatedAt;
 	private Date createdAt;
 	private int favStatus;
@@ -19,7 +20,7 @@ public class File {
 	private boolean status;
 	
 	
-	public File(int id, int folderId, int userId, String displayName, String newName, String fileType, String fileSize,
+	public Filex(int id, int folderId, int userId, String displayName, String newName, String fileType, String fileSize,
 			String fileHash, Date updatedAt, Date createdAt, int favStatus, int trashStatus,
 			boolean status) {
 		super();
@@ -36,9 +37,9 @@ public class File {
 		this.favStatus = favStatus;
 		this.trashStatus = trashStatus;
 		this.status = status;
-	}
+	}	
 	
-	public File(int id, int folderId, String displayName, String newName, String fileType, String fileSize,
+	public Filex(int id, int folderId, String displayName, String newName, String fileType, String fileSize,
 			String fileHash, int favStatus, int trashStatus, Date updatedAt, Date createdAt) {
 		super();
 		this.id = id;
@@ -54,7 +55,20 @@ public class File {
 		this.trashStatus = trashStatus;
 	}
 
-	public File(int folderId, int userId) {
+	public Filex(int userId, int folderId, String displayName, String newName, String fileType, String fileSize,
+			String fileHash, String filePath) {
+		super();
+		this.userId = userId;
+		this.folderId = folderId;
+		this.displayName = displayName;
+		this.newName = newName;
+		this.fileType = fileType;
+		this.fileSize = fileSize;
+		this.fileHash = fileHash;
+		this.filePath = filePath;
+	}
+
+	public Filex(int folderId, int userId) {
 		this.folderId = folderId;
 		this.userId = userId;
 	}
@@ -97,6 +111,14 @@ public class File {
 	
 	public void setNewName(String newName) {
 		this.newName = newName;
+	}
+	
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
 	
 	public String getFileType() {
@@ -167,7 +189,7 @@ public class File {
 	public String toString() {
 		return "File [id=" + id + ", folderId=" + folderId + ", userId=" + userId + ", displayName=" + displayName
 				+ ", newName=" + newName + ", fileType=" + fileType + ", fileSize=" + fileSize + ", fileHash="
-				+ fileHash + ", updatedAt=" + updatedAt + ", createdAt=" + createdAt + ", favStatus=" + favStatus
-				+ ", trashStatus=" + trashStatus + ", status=" + status + "]";
+				+ fileHash + ", filePath=" + filePath + ", updatedAt=" + updatedAt + ", createdAt=" + createdAt
+				+ ", favStatus=" + favStatus + ", trashStatus=" + trashStatus + ", status=" + status + "]";
 	}
 }

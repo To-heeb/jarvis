@@ -239,8 +239,8 @@ public class DashboardDbUtil {
 		}
 	}
 	
-	public List<File> getFiles(File theFile) {
-		List<File> files = new ArrayList<>();
+	public List<Filex> getFiles(Filex theFile) {
+		List<Filex> files = new ArrayList<>();
 
 		PreparedStatement myStmt = null;
 		ResultSet myRs = null;
@@ -279,7 +279,7 @@ public class DashboardDbUtil {
 				Date updatedAt = myRs.getDate("updated_at");
 
 				// create new folder object
-				File tempFile= new File(id, folderId, fileDisplayName, fileNewName, fileType, fileSize, fileHash,favStatus, trashStatus, createdAt, updatedAt);
+				Filex tempFile= new Filex(id, folderId, fileDisplayName, fileNewName, fileType, fileSize, fileHash,favStatus, trashStatus, createdAt, updatedAt);
 
 				// add it to the list of folders
 				files.add(tempFile);

@@ -62,7 +62,7 @@
 	        		  formData.append("folder_id", folder_id);
 	        		  
 	        		 Swal.fire({
-	                        html: "Encrypting files...",
+	                        html: "Encrypting file....",
 	                        allowOutsideClick: false,
 	                        didOpen: () => {
 	                            Swal.showLoading();
@@ -71,16 +71,18 @@
 	        	    });
 	        	    this.on("success", function(files, response) {
 	        	    	console.log(response)
-	        	    	 //var obj = jQuery.parseJSON(response);
-	        	    	 //console.log(obj);
+	        	    	 var obj = jQuery.parseJSON(response);
+	        	    	 console.log(obj);
 	        	    	if (obj.status == "success") {
 	                        console.log(obj.message)
-	                        form.classList.add("d-none");
 	                        Swal.fire({
+	                        	position: 'top-end',
 	                            icon: "success",
 	                            title: "Great!!",
+	                            showConfirmButton: false,
 	                            allowOutsideClick: false,
-	                            text: "Document Submitted and Email Successfully Sent",
+	                            text: "Encryption successfully completed",
+	                            timer: 2500,
 	                        }).then((result) => {
 	                          location.reload();
 	                        });
@@ -90,8 +92,11 @@
 	                            icon: "error",
 	                            title: "Oops...",
 	                            allowOutsideClick: false,
-	                            //html: obj.status,
-	                            html: obj.message
+	                            showConfirmButton: false,
+	                            text: "Encryption failed, Something went wrong please try again later",
+	                            timer: 2500,
+	                        }).then((result) => {
+	                          location.reload();
 	                        });
 	                    }
 	        	    });
@@ -111,9 +116,9 @@
 		        }
 		    })
 			
-			
+		 	
 			var myDropzone = new Dropzone(".modal_dropzone", {
-				url : "/dms/upload",
+		    	url : "/dms/upload",
 		    	autoDiscover: false,
 		        paramName: "uploaded_file",
 		        maxFilesize: 1000,
@@ -125,10 +130,67 @@
 		        createImageThumbnails: true,
 		        timeout: 100000,
 		        init: function() {
-		        	
+	        	  this.on("sending", function(file, xhr, formData) {
+	        		  // append folder_id here
+	        		  var folder_id = document.querySelector("#folder_id_ajax").value;
+	        		  console.log(folder_id)
+	        		  formData.append("folder_id", folder_id);
+	        		  $("#uploadModal").modal('hide')
+	        		  Swal.fire({
+	                        html: "Encrypting file....",
+	                        allowOutsideClick: false,
+	                        didOpen: () => {
+	                            Swal.showLoading();
+	                        },
+	                    });
+	        	    });
+	        	    this.on("success", function(files, response) {
+	        	    	console.log(response)
+	        	    	 var obj = jQuery.parseJSON(response);
+	        	    	 //console.log(obj);
+	        	    	if (obj.status == "success") {
+	                        console.log(obj.message)
+	                        Swal.fire({
+	                        	position: 'top-end',
+	                            icon: "success",
+	                            title: "Great!!",
+	                            showConfirmButton: false,
+	                            allowOutsideClick: false,
+	                            text: "Encryption successfully completed",
+	                            timer: 2500,
+	                        }).then((result) => {
+	                          location.reload();
+	                        });
+	                    } else {
+	                        console.log(obj.message)
+	                        Swal.fire({
+	                            icon: "error",
+	                            title: "Oops...",
+	                            allowOutsideClick: false,
+	                            showConfirmButton: false,
+	                            text: "Encryption failed, Something went wrong please try again later",
+	                            timer: 2500,
+	                        }).then((result) => {
+	                          location.reload();
+	                        });
+	                    }
+	        	    });
+	        	    this.on("error", function(files, response) {
+	        	    	Swal.fire({
+	                        icon: "error",
+	                        title: "Oops...",
+	                        allowOutsideClick: false,
+	                        text: "Something went wrong!",
+	                    }).then((result) => {
+	                        /* Read more about isConfirmed, isDenied below */
+	                        if (result.isConfirmed) {
+	                            location.reload();
+	                        }
+	                    });
+	        	    });
 		        }
 		    })
-		 
+		 	
 		    
 		 	// make value for renaming folder show in form field
 		    document.querySelector(".folder_row").addEventListener("click", (event) => {

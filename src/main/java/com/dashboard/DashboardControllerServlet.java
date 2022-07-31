@@ -195,9 +195,9 @@ public class DashboardControllerServlet extends HttpServlet {
 			// get folders from db util
 			List<Folder> folderList =  dashboardDbUtil.getFolders(theFolder);
 			
-			File theFile = new File(parentFolderId, userId);
+			Filex theFile = new Filex(parentFolderId, userId);
 			
-			List<File> fileList =  dashboardDbUtil.getFiles(theFile);
+			List<Filex> fileList =  dashboardDbUtil.getFiles(theFile);
 			
 			//List<Folder> folderFiles =  dashboardDbUtil.getFiles(theFolder);
 			
@@ -268,10 +268,10 @@ public class DashboardControllerServlet extends HttpServlet {
 			// get folders from db util
 			List<Folder> folders =  dashboardDbUtil.getFolders(theFolder);
 			
-			File theFile = new File(0, userId);
+			Filex theFile = new Filex(0, userId);
 			
 			// get files from db util
-			List<File> fileList =  dashboardDbUtil.getFiles(theFile);
+			List<Filex> fileList =  dashboardDbUtil.getFiles(theFile);
 			
 			//send variable from here to view
 			request.setAttribute("folder_list", folders);
