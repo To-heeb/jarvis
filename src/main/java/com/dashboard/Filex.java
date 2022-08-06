@@ -7,9 +7,11 @@ public class Filex {
 	private int id;
 	private int folderId;
 	private int userId;
+	private int fileId;
 	private String displayName;
 	private String newName;
 	private String fileType;
+	private String fileCategory;
 	private String fileSize;
 	private String fileHash;
 	private String filePath;
@@ -39,8 +41,8 @@ public class Filex {
 		this.status = status;
 	}	
 	
-	public Filex(int id, int folderId, String displayName, String newName, String fileType, String fileSize,
-			String fileHash, int favStatus, int trashStatus, Date updatedAt, Date createdAt) {
+	public Filex(int id, int folderId, String displayName, String newName, String fileType, String fileCategory, String fileSize,
+			String fileHash, String filePath,int favStatus, int trashStatus, Date updatedAt, Date createdAt) {
 		super();
 		this.id = id;
 		this.folderId = folderId;
@@ -48,14 +50,16 @@ public class Filex {
 		this.newName = newName;
 		this.fileType = fileType;
 		this.fileSize = fileSize;
+		this.fileCategory = fileCategory;
 		this.fileHash = fileHash;
+		this.filePath = filePath;
 		this.updatedAt = updatedAt;
 		this.createdAt = createdAt;
 		this.favStatus = favStatus;
 		this.trashStatus = trashStatus;
 	}
 
-	public Filex(int userId, int folderId, String displayName, String newName, String fileType, String fileSize,
+	public Filex(int userId, int folderId, String displayName, String newName, String fileType, String fileCategory, String fileSize,
 			String fileHash, String filePath) {
 		super();
 		this.userId = userId;
@@ -63,14 +67,28 @@ public class Filex {
 		this.displayName = displayName;
 		this.newName = newName;
 		this.fileType = fileType;
+		this.fileCategory = fileCategory;
 		this.fileSize = fileSize;
 		this.fileHash = fileHash;
 		this.filePath = filePath;
 	}
 
-	public Filex(int folderId, int userId) {
-		this.folderId = folderId;
+	
+
+	public Filex(int fileId, int userId) {
+		this.fileId = fileId;
 		this.userId = userId;
+	}
+	
+	public Filex(int userId) {
+		this.userId = userId;
+	}
+
+	public Filex(int fileId, int userId, String fileName) {
+		// TODO Auto-generated constructor stub
+		this.fileId = fileId;
+		this.userId = userId;
+		this.displayName = fileName;
 	}
 
 	public int getId() {
@@ -79,6 +97,14 @@ public class Filex {
 	
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public int getFileId() {
+		return fileId;
+	}
+
+	public void setFileId(int fileId) {
+		this.fileId = fileId;
 	}
 	
 	public int getFolderId() {
@@ -127,6 +153,14 @@ public class Filex {
 	
 	public void setFileType(String fileType) {
 		this.fileType = fileType;
+	}
+	
+	public String getFileCategory() {
+		return fileCategory;
+	}
+
+	public void setFileCategory(String fileCategory) {
+		this.fileCategory = fileCategory;
 	}
 	
 	public String getFileSize() {

@@ -21,6 +21,11 @@
     <servlet-name>FolderControllerServlet</servlet-name>
     <servlet-class>com.dashboard.FolderControllerServlet</servlet-class>
   </servlet>
+  
+  <servlet>
+    <servlet-name>FileControllerServlet</servlet-name>
+    <servlet-class>com.dashboard.FileControllerServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>UserControllerServlet</servlet-name>
@@ -95,6 +100,11 @@
    <servlet-mapping>
     <servlet-name>FolderControllerServlet</servlet-name>
     <url-pattern>/dashboard/route_folder</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>FileControllerServlet</servlet-name>
+    <url-pattern>/dashboard/route_file</url-pattern>
   </servlet-mapping>
   
   <error-page>

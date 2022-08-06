@@ -190,12 +190,34 @@
 	        	    });
 		        }
 		    })
-		 	
+		    
 		    
 		 	// make value for renaming folder show in form field
 		    document.querySelector(".folder_row").addEventListener("click", (event) => {
 		    	document.getElementById('rename_modal_value').value = event.target.parentElement.previousElementSibling.firstElementChild.innerHTML; 
 		    	document.getElementById('folder_id').value = event.target.nextElementSibling.value;
+		    })
+		    
+		    // make value for renaming file show in form field
+		    document.querySelector(".file_row").addEventListener("click", (event) => {
+		    	document.getElementById('rename_file_modal_value').value = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.innerHTML; 
+		    	document.getElementById('file_id').value = event.target.nextElementSibling.value;
+		    })
+		    
+		    // make the preview modal show file type
+		    document.querySelector(".file_row").addEventListener("click", (event) => {
+		    	var file_type = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.previousElementSibling.value; 
+		    	//alert(file_type)
+		    	if(file_type == 'image'){
+		    		var image_link = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value;
+		    		document.getElementById('preview_title').innerHTML = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.innerHTML; 
+		    		document.getElementById("preview_div").innerHTML = "<img src='"+image_link+"' width='90%' height='300'/>"
+		    	}else{
+			    	document.getElementById('preview_title').innerHTML = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.innerHTML; 
+			    	var iframe_link = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value;
+			    	document.getElementById("preview_div").innerHTML = "<iframe src='"+iframe_link+"' width='100%' height='300' class=''  id='preview_iframe' loading='lazy' allowtransparency=true' allowfullscreen ></iframe>";
+			    	//console.dir(document.getElementById('preview_iframe'))
+		    	}
 		    })
 			
 		      
@@ -356,10 +378,62 @@
                     location.href = "<%= dashboardURL %>";
                 });
         	}
+        	
+        	
+        	//copy file link
+        	document.querySelector(".file_row").addEventListener("click", (event) => {
+        		var copyText = event.target.querySelector("span");
+        		
+        		if(event.target.innerHTML == "Get Link"){
+        			
+        			const input = document.createElement('input');
+            		input.value = event.target.parentElement.href;
+            		console.log(event.target.parentElement.href)
+    				document.body.appendChild(input);
+    				input.select();
+    				document.execCommand('copy');
+    			    document.body.removeChild(input);
+        			
+        		}
+        		
+        		if(copyText.innerHTML == "Get Link"){
+        			
+        			const input = document.createElement('input');
+            		input.value = event.target.href;
+            		console.log(event.target.href)
+    				document.body.appendChild(input);
+    				input.select();
+    				document.execCommand('copy');
+    			    document.body.removeChild(input);
+    			    
+        		}
+        	});
 		    
 	    })
 	</script>
-
+	<script type="text/javascript">
+	
+		 document.addEventListener("DOMContentLoaded", function(){
+			 
+				// make the preview modal show file type 
+			    document.querySelector(".file_div").addEventListener("click", (event) => {
+			    	
+			    	var file_type = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.previousElementSibling.value;
+			    	//alert(file_type)
+			    	if(file_type == 'image'){
+			    		var image_link = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value;
+			    		document.getElementById('preview_title').innerHTML = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.innerHTML; 
+			    		document.getElementById("preview_div").innerHTML = "<img src='"+image_link+"' width='90%' height='300'/>"
+			    	}else{
+				    	document.getElementById('preview_title').innerHTML = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.innerHTML; 
+				    	var iframe_link = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value;
+				    	document.getElementById("preview_div").innerHTML = "<iframe src='"+iframe_link+"' width='100%' height='300' class=''  id='preview_iframe' loading='lazy' allowtransparency=true' allowfullscreen ></iframe>";
+			    	}
+			    })
+			 
+		 })
+	
+	</script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
   </body>

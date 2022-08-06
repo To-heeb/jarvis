@@ -27,7 +27,6 @@ public class FolderControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	
-	
 	private FolderDbUtil folderDbUtil;
 	
 	// Define datasource and connection pool for Resource Injection
@@ -79,7 +78,7 @@ public class FolderControllerServlet extends HttpServlet {
 				renameFolder(request, response);
 				break;
 			case "DELETE":
-				//deleteFolder(request, response);
+				deleteFolder(request, response);
 				break;
 			case "STARRED":
 				starFolder(request, response);
@@ -97,6 +96,11 @@ public class FolderControllerServlet extends HttpServlet {
 				redirectToDashboard(request, response);;
 				break;
 		}
+		
+	}
+
+	private void deleteFolder(HttpServletRequest request, HttpServletResponse response) {
+		// TODO Auto-generated method stub
 		
 	}
 

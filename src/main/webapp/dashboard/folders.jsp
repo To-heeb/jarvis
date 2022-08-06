@@ -52,7 +52,7 @@
 				  	 	<div class="col-lg-12">
            					<div class="d-flex justify-content-center mt-md-5 mt-5">
            						<!--  change image here -->
-           						<img src="../dashboard_assets/img/icons/unicons/bookmark.png" width="" height=""><br>
+           						<img src="../dashboard_assets/img/icons/unicons/empty-folder.png" width="" height=""><br>
            					</div>
            					<h3 class="text-center mt-md-4 mt-4">No Recent Item</h3>
 						</div>

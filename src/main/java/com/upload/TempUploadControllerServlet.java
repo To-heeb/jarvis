@@ -108,6 +108,9 @@ public class TempUploadControllerServlet extends HttpServlet {
 		//fileName will be the displayname
 		String fileName = filePart.getSubmittedFileName();
 		
+		//fileName for database
+		String fileNameDb = fileName.substring(0,  fileName.lastIndexOf("."));
+		
 		// Access session
 		HttpSession session = request.getSession(true);
 		
@@ -121,8 +124,14 @@ public class TempUploadControllerServlet extends HttpServlet {
 		String randomChars = generateRandomChars(
 	            "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", 17);
 		
+		//get file extension
+		String fileExtension  = fileName.substring(fileName.lastIndexOf("."));
+		
+		//get file new name
+		String fileNewName  = randomChars+fileExtension;
+		
 		//get file path string
-		String filePathString = getServletContext().getRealPath("/"+"file_upload" +File.separator + fileName);
+		String filePathString = getServletContext().getRealPath("/"+"file_upload" +File.separator + fileNewName);
 		
 		//get file path
 		Path filePath = Paths.get(filePathString);
@@ -132,14 +141,11 @@ public class TempUploadControllerServlet extends HttpServlet {
 		//get file type
 		String fileType = Files.probeContentType(file.toPath().toAbsolutePath());
 		
-		//get file extension
-		String fileExtension  = fileName.substring(fileName.lastIndexOf("."));
+		//get file category
+		String fileCategory  = fileType.substring(0, fileType.lastIndexOf("/"));
 		
 		//get file size
 		String fileSize = Integer.toString((int) filePart.getSize());
-		
-		//get file new name
-		String fileNewName  = randomChars+fileExtension;
 		
 		//get timestamp
 		Date date = new Date();
@@ -150,17 +156,16 @@ public class TempUploadControllerServlet extends HttpServlet {
 		String fileHash =  currentTimeStamp+generateRandomChars(
 	            "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", 10);
 		
-		//Encrypt files here before upload
-		//
+		//Encrypt file here before upload
 		
 		for (Part part : request.getParts()) {
-		      part.write(getServletContext().getRealPath("/"+"file_upload" +File.separator + fileName));
+		      part.write(getServletContext().getRealPath("/"+"file_upload" +File.separator + fileNewName));
 		    }
 				
 		//Insert file data into the database
 		
 		//create file object here
-		Filex newFile = new Filex(userId, folder_id, fileName, fileNewName, fileType, fileSize, fileHash, filePathString);
+		Filex newFile = new Filex(userId, folder_id, fileNameDb, fileNewName, fileType, fileCategory, fileSize, fileHash, filePathString);
 		
 		boolean upload_status;
 		try {

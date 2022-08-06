@@ -121,23 +121,48 @@ public class DashboardControllerServlet extends HttpServlet {
 			break;
 			
 		case "/dashboard/documents":
-			listDocuments(request, response, "documents.jsp");
+			try {
+				listDocuments(request, response, "documents.jsp");
+			} catch (Exception e) {
+				//e.printStackTrace();
+				response.sendRedirect(baseURL + "dashboard/home");
+			}
 			break;
 			
 		case "/dashboard/videos":
-			listVideos(request, response, "videos.jsp");
+			try {
+				listVideos(request, response, "videos.jsp");
+			} catch (Exception e) {
+				//e.printStackTrace();
+				response.sendRedirect(baseURL + "dashboard/home");
+			}
 			break;
 			
 		case "/dashboard/audios":
-			listAudios(request, response, "audios.jsp");
+			try {
+				listAudios(request, response, "audios.jsp");
+			} catch (Exception e) {
+				//e.printStackTrace();
+				response.sendRedirect(baseURL + "dashboard/home");
+			}
 			break;
 			
 		case "/dashboard/images":
-			listImages(request, response, "images.jsp");
+			try {
+				listImages(request, response, "images.jsp");
+			} catch (Exception e) {
+				//e.printStackTrace();
+				response.sendRedirect(baseURL + "dashboard/home");
+			}
 			break;
 			
 		case "/dashboard/others":
-			listOthers(request, response, "others.jsp");
+			try {
+				listOthers(request, response, "others.jsp");
+			} catch (Exception e) {
+				//e.printStackTrace();
+				response.sendRedirect(baseURL + "dashboard/home");
+			}
 			break;
 			
 		case "/dashboard/home":
@@ -195,7 +220,7 @@ public class DashboardControllerServlet extends HttpServlet {
 			// get folders from db util
 			List<Folder> folderList =  dashboardDbUtil.getFolders(theFolder);
 			
-			Filex theFile = new Filex(parentFolderId, userId);
+			Filex theFile = new Filex(folderId, userId);
 			
 			List<Filex> fileList =  dashboardDbUtil.getFiles(theFile);
 			
@@ -215,41 +240,112 @@ public class DashboardControllerServlet extends HttpServlet {
 	}
 
 	private void listOthers(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+			// Access session
+			HttpSession session = request.getSession(true);
+			
+			//get user id
+			int userId = (int) session.getAttribute("id");
+			
+			Filex allFiles = new Filex(0, userId);
+			
+			// get students from db util
+			List<Filex> documents =  dashboardDbUtil.getOtherFiles(allFiles);
+			
+			//send variable from here to view
+			request.setAttribute("files", documents);
+				
 			// initiate dispatcher
-			RequestDispatcher dispatcher = request.getRequestDispatcher(page);	
-							
+			RequestDispatcher dispatcher = request.getRequestDispatcher(page);
+			
 			// forward the request to JSP
-			dispatcher.forward(request, response);
+			dispatcher.forward(request, response);	
 	}
 
 	private void listImages(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+			// Access session
+			HttpSession session = request.getSession(true);
+			
+			//get user id
+			int userId = (int) session.getAttribute("id");
+			
+			Filex allImages = new Filex(0, userId);
+			
+			// get students from db util
+			List<Filex> documents =  dashboardDbUtil.getImages(allImages);
+			
+			//send variable from here to view
+			request.setAttribute("images", documents);
+				
 			// initiate dispatcher
-			RequestDispatcher dispatcher = request.getRequestDispatcher(page);	
-							
+			RequestDispatcher dispatcher = request.getRequestDispatcher(page);
+			
 			// forward the request to JSP
-			dispatcher.forward(request, response);
+			dispatcher.forward(request, response);	
 	}
 
 	private void listAudios(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+			// Access session
+			HttpSession session = request.getSession(true);
+			
+			//get user id
+			int userId = (int) session.getAttribute("id");
+			
+			Filex allAudios = new Filex(0, userId);
+			
+			// get students from db util
+			List<Filex> documents =  dashboardDbUtil.getAudios(allAudios);
+			
+			//send variable from here to view
+			request.setAttribute("audios", documents);
+				
 			// initiate dispatcher
-			RequestDispatcher dispatcher = request.getRequestDispatcher(page);	
-							
+			RequestDispatcher dispatcher = request.getRequestDispatcher(page);
+			
 			// forward the request to JSP
-			dispatcher.forward(request, response);
+			dispatcher.forward(request, response);	
 	}
 
 	private void listVideos(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+			// Access session
+			HttpSession session = request.getSession(true);
+			
+			//get user id
+			int userId = (int) session.getAttribute("id");
+			
+			Filex allVidoes = new Filex(0, userId);
+			
+			// get students from db util
+			List<Filex> documents =  dashboardDbUtil.getVideos(allVidoes);
+			
+			//send variable from here to view
+			request.setAttribute("videos", documents);
+				
 			// initiate dispatcher
-			RequestDispatcher dispatcher = request.getRequestDispatcher(page);	
-							
+			RequestDispatcher dispatcher = request.getRequestDispatcher(page);
+			
 			// forward the request to JSP
-			dispatcher.forward(request, response);
+			dispatcher.forward(request, response);	
 	}
 
-	private void listDocuments(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+	private void listDocuments(HttpServletRequest request, HttpServletResponse response, String page) throws Exception {
+			
+			// Access session
+			HttpSession session = request.getSession(true);
+			
+			//get user id
+			int userId = (int) session.getAttribute("id");
+			
+			Filex allDocument = new Filex(0, userId);
+			
+			// get students from db util
+			List<Filex> documents =  dashboardDbUtil.getDocuments(allDocument);
+			
+			//send variable from here to view
+			request.setAttribute("documents", documents);
+				
 			// initiate dispatcher
-			RequestDispatcher dispatcher = request.getRequestDispatcher(page);	
-							
+			RequestDispatcher dispatcher = request.getRequestDispatcher(page);
+			
 			// forward the request to JSP
 			dispatcher.forward(request, response);	
 	}
@@ -306,11 +402,17 @@ public class DashboardControllerServlet extends HttpServlet {
 			
 			Folder theFolder = new Folder(0, userId);
 			
-			// get students from db util
+			// get starred folders from db util
 			List<Folder> folders =  dashboardDbUtil.getStarredFolders(theFolder);
+			
+			Filex theFile = new Filex(0, userId);
+			
+			// get starred files from db util
+			List<Filex> files =  dashboardDbUtil.getStarredFiles(theFile);
 			
 			//send variable from here to view
 			request.setAttribute("starred_folder_list", folders);
+			request.setAttribute("starred_file_list", files);
 			
 		 	// initiate dispatcher
 			RequestDispatcher dispatcher = request.getRequestDispatcher(page);				
@@ -352,11 +454,17 @@ public class DashboardControllerServlet extends HttpServlet {
 			
 			Folder theFolder = new Folder(0, userId);
 			
-			// get students from db util
+			// get trashed from db util
 			List<Folder> folders =  dashboardDbUtil.getTrashedFolders(theFolder);
+			
+			Filex theFile = new Filex(0, userId);
+			
+			// get trashed files from db util
+			List<Filex> files =  dashboardDbUtil.getTrashedFiles(theFile);
 			
 			//send variable from here to view
 			request.setAttribute("trash_folder_list", folders);
+			request.setAttribute("trash_file_list", files);
 				
 			// initiate dispatcher
 			RequestDispatcher dispatcher = request.getRequestDispatcher(page);
@@ -377,8 +485,14 @@ public class DashboardControllerServlet extends HttpServlet {
 		// get students from db util
 		List<Folder> folders =  dashboardDbUtil.getFolders(theFolder);
 		
+		Filex theFile = new Filex(0, userId);
+		
+		// get files from db util
+		List<Filex> fileList =  dashboardDbUtil.getFiles(theFile);
+		
 		//send variable from here to view
 		request.setAttribute("folder_list", folders);
+		request.setAttribute("file_list", fileList);
 		
 		//	initiate dispatcher
 		RequestDispatcher dispatcher = request.getRequestDispatcher(page);
@@ -386,6 +500,12 @@ public class DashboardControllerServlet extends HttpServlet {
 		// forward the request to JSP
 		dispatcher.forward(request, response);
 	}
+//	
+//	public static void downloadFile(URL url, String fileName) throws Exception {
+//        try (InputStream in = url.openStream()) {
+//            Files.copy(in, Paths.get(fileName));
+//        }
+//    }
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

@@ -59,14 +59,55 @@
 						<hr>
 						
 						<!-- If audios is empty show this -->
-						<div class="col-lg-12">
-           					<div class="d-flex justify-content-center mt-md-5 mt-5">
-           						<img src="../dashboard_assets/img/icons/unicons/bookmark.png" width="" height=""><br>
-           					</div>
-           					<h3 class="text-center mt-md-4 mt-4">No Audio Yet</h3>
-						</div>
+						<c:if test="${fn:length(audios) < 1}">
+							<div class="col-lg-12">
+	           					<div class="d-flex justify-content-center mt-md-5 mt-5">
+	           						<img src="../dashboard_assets/img/icons/unicons/sound-bars.png" width="" height=""><br>
+	           					</div>
+	           					<h3 class="text-center mt-md-4 mt-4">No Audio Yet</h3>
+							</div>
+						</c:if>
 				  	 
 				  	 	<!-- else show this -->
+				  	 	<div class="row file_div">
+					  	 	<!--<c:if test="${fn:length(audios) > 1}"><h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Audios</span></h4></c:if>-->
+					  	 	<c:forEach var="audioItem" items="${audios}">
+					  	 		<div class="col-lg-2 col-md-3 col-6 mb-3">
+							        <div class="card">
+							          <div class="card-body">
+							            <div class="card-title d-flex align-items-start justify-content-between" style="margin-bottom: 0px !important;">
+							               <div class="flex-shrink-0">
+							                 <c:if test="${audioItem.favStatus == 1}" ><i class='bx bxs-star' style="color: #8588FF;"></i></c:if><c:if test="${audioItem.favStatus != 1}" ><i class='bx bxs-star' style="color: #FFFFFF;"></i></c:if>
+							              </div>
+							              <div class="dropdown mb-1">
+							                <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							                  <i class="bx bx-dots-vertical-rounded"></i>
+							                </button>
+							                <div class="dropdown-menu" aria-labelledby="cardOpt6">
+							                  <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#preview_modal"><i class='bx bx-show'></i> Preview</a>
+							                  <c:if test="${audioItem.favStatus == 1}" ><a class="dropdown-item" href="route_file?command=UNSTARRED&file_id=${audioItem.id}"><i class='bx bx-star'></i> Remove Starred</a></c:if>
+					                  		  <c:if test="${audioItem.favStatus != 1}" ><a class="dropdown-item" href="route_file?command=STARRED&file_id=${audioItem.id}"><i class='bx bx-star'></i> Add to Starred</a></c:if>
+							                  <a class="dropdown-item getlink" href="${audioItem.filePath}"><i class='bx bx-link-alt'></i> <span>Get Link</span></a>
+							                  <a class="dropdown-item rename_link" href="#" data-bs-toggle="modal" data-bs-target="#rename_file_modal"><i class='bx bx-edit-alt'></i> Rename</a>
+							                  <input type="hidden" class="file_id" value="${audioItem.id}">
+							                  <a class="dropdown-item" href="${audioItem.filePath}" download="${audioItem.displayName}"><i class='bx bx-cloud-download' ></i> Download</a>
+							                  <hr>
+							                  <a class="dropdown-item" href="route_file?command=TRASH&file_id=${audioItem.id}"><i class='bx bx-trash'></i> Delete</a>
+							                </div>
+							              </div>
+							            </div>
+							            <!-- <span class="d-block">Sales</span>
+							            <h4 class="card-title mb-1">$4,679</h4> -->
+								
+									     <span><a href = "<%= baseURL+"file_upload/"%>${audioItem.newName}" target="_blank"><img src="../dashboard_assets/img/demo/audio-waves.png" class="w-100 mb-1 border border-primary p-3 border-2 rounded" width="" height="100px"></a></span>  
+							            <input type="hidden" class="file_type" value="${audioItem.fileCategory}"/>
+							            <input type="hidden" class="file_link" value="<%= baseURL+"file_upload/"%>${audioItem.newName}"/>
+							            <small class="text-success fw-semibold">${audioItem.displayName}</small>
+							          </div>
+							        </div>
+							      </div>
+					  	 	</c:forEach>
+				  	 	</div>
 					</div>
             	</div>
             <!-- / Content -->
