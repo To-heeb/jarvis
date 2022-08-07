@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,6 +29,9 @@ import javax.sql.DataSource;
 
 import com.dashboard.FileDbUtil;
 import com.dashboard.Filex;
+import com.encryption.AES;
+import com.encryption.RSA;
+
 import org.json.JSONObject;
 
 /**
@@ -74,10 +79,50 @@ public class TempUploadControllerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
     	
-    	 String url = request.getRequestURL().toString();
-    	 String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";
-    	 response.sendRedirect(baseURL + "dashboard");
+    	//  String url = request.getRequestURL().toString();
+    	// String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";
+    	// response.sendRedirect(baseURL + "dashboard");
     	 
+
+    	 //Encryption
+    	
+         // Create String variables
+         String originalString = "GeeksforGeeks";
+         System.out.println(originalString);
+         
+         // Call AES encryption method
+         String encryptedAESString = AES.encrypt(originalString);
+         System.out.println("AES encrypted string: "+encryptedAESString);
+         
+         
+         RSA rsa = new RSA();
+         // Call RAS encryption method
+         System.out.println("RSA Encrypting AES String: " + encryptedAESString);
+         
+         System.out.println("RSA String in Bytes: "+ RSA.bytesToString(encryptedAESString.getBytes()));
+         
+         
+         // Call RSA encryption method 
+         byte[] encryptedRSAByte = rsa.encrypt(encryptedAESString.getBytes());
+         
+         System.out.println("Encrypted RSA in Bytes: " + encryptedRSAByte);
+         
+         
+         
+         //Decryption
+         
+         // Call RSA decryption method 
+         byte[] decryptedRSAByte = rsa.decrypt(encryptedRSAByte);
+         
+         String decryptedRSAString = new String (decryptedRSAByte);
+         System.out.println("Decrypted RSA Bytes: " + RSA.bytesToString(decryptedRSAByte));
+                 
+         
+         // Call AES decryption method
+         String decryptedAESString = AES.decrypt(decryptedRSAString);
+         System.out.println(decryptedAESString);
+   
+         
     	 /*ServletContext servletContext = getServletContext();
   		String contextPath = servletContext.getRealPath("/"+"file_upload" +File.separator);
   		PrintWriter out = response.getWriter();
@@ -96,13 +141,16 @@ public class TempUploadControllerServlet extends HttpServlet {
 			e1.printStackTrace();
 		}
 		
+		//JSON Object 
+		JSONObject json = new JSONObject();
+		
 		//Step 1: set the content type
 		response.setContentType("text/html");
 		
 		//Step 2: get the printwriter
 		PrintWriter out = response.getWriter();
 					
-		// Create parh components to save the file
+		// Create path components to save the file
 		Part filePart = request.getPart("uploaded_file");
 		
 		//fileName will be the displayname
@@ -156,8 +204,21 @@ public class TempUploadControllerServlet extends HttpServlet {
 		String fileHash =  currentTimeStamp+generateRandomChars(
 	            "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", 10);
 		
-		//Encrypt file here before upload
+		//Store file encrypted version here
+		String encryptedfile = getServletContext().getRealPath("/"+"encrypted_file_upload" +File.separator + fileName);
 		
+		InputStream inputStream = filePart.getInputStream();
+		
+		boolean encrytionStatus = uploadFileDumped(inputStream, encryptedfile);
+		
+		if(encrytionStatus){
+			json.put("encryption", "success");
+		}else {
+			json.put("encryption", "failed");
+		}
+		
+		
+		//File upload here
 		for (Part part : request.getParts()) {
 		      part.write(getServletContext().getRealPath("/"+"file_upload" +File.separator + fileNewName));
 		    }
@@ -170,7 +231,7 @@ public class TempUploadControllerServlet extends HttpServlet {
 		boolean upload_status;
 		try {
 			upload_status = fileDbUtil.createFile(newFile);
-			JSONObject json = new JSONObject();
+			
 			if(upload_status) {
 				
 					json.put("status", "success");
@@ -211,34 +272,57 @@ public class TempUploadControllerServlet extends HttpServlet {
 	    return sb.toString();
 	}
 	
-	public boolean uploadFile(HttpServletRequest request, String fileName) {
-		boolean upload_status = false;
+	
+	public byte[] encryptionAlgo(String byteToEncrypt) {
+		//Encryption
 		
-		try {
-			
-			
-			
-			upload_status = true;
-			
-		}catch(Exception exc){
-			exc.printStackTrace();
-		}
-		return upload_status;
-	} 
+		// Call AES encryption method
+		String encryptedAESString = AES.encrypt(byteToEncrypt);
+		
+		RSA rsa = new RSA();
+		
+        // Call RSA encryption method 
+        byte[] encryptedRSAByte = rsa.encrypt(encryptedAESString.getBytes());
+        
+		return encryptedRSAByte;
+	}
+	
+	public String decryptionAlgo(byte[] encryptedRSAByte) {
+		//Decryption
+		
+		RSA rsa = new RSA();
+		
+	    // Call RSA decryption method 
+        byte[] decryptedRSAByte = rsa.decrypt(encryptedRSAByte);
+        
+        String decryptedRSAString = new String (decryptedRSAByte);
+       
+        // Call AES decryption method
+        String decryptedAESString = AES.decrypt(decryptedRSAString);
+        
+		return decryptedAESString;
+	}
 	
 	
 	public boolean uploadFileDumped(InputStream inputStream, String path) {
+		
 		boolean upload_status = false;
 		
 		try {
 			
-			byte[] new_byte = new byte[inputStream.available()];
-			
-			inputStream.read();
-			
 			FileOutputStream fileOutputStream = new FileOutputStream(path);
 			
-			fileOutputStream.write(new_byte);
+			int bytez;
+		
+			while((bytez = inputStream.read()) != -1) {
+				
+				//encrypt uploaded files here
+				//byte[] encrytedbytes = encryptionAlgo(Integer.toString(bytez));
+				
+				fileOutputStream.write(bytez);
+			}
+			
+			inputStream.close();
 			fileOutputStream.flush();
 			fileOutputStream.close();
 			

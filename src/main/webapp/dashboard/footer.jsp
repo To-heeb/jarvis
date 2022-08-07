@@ -150,6 +150,7 @@
 	        	    	 //console.log(obj);
 	        	    	if (obj.status == "success") {
 	                        console.log(obj.message)
+	                        console.log(obj.encryption)
 	                        Swal.fire({
 	                        	position: 'top-end',
 	                            icon: "success",
@@ -221,6 +222,7 @@
 		    	}
 		    })
 			
+		    //
 		      
 		    <%
 
@@ -382,34 +384,61 @@
         	}
       
         	
-        	//copy file link
-        	document.querySelector(".file_row").addEventListener("click", (event) => {
-        		var copyText = event.target.querySelector("span");
-        		
-        		if(event.target.innerHTML == "Get Link"){
-        			
-        			const input = document.createElement('input');
-            		input.value = event.target.parentElement.href;
-            		console.log(event.target.parentElement.href)
-    				document.body.appendChild(input);
-    				input.select();
-    				document.execCommand('copy');
-    			    document.body.removeChild(input);
-        			
-        		}
-        		
-        		if(copyText.innerHTML == "Get Link"){
-        			
-        			const input = document.createElement('input');
-            		input.value = event.target.href;
-            		console.log(event.target.href)
-    				document.body.appendChild(input);
-    				input.select();
-    				document.execCommand('copy');
-    			    document.body.removeChild(input);
-    			    
-        		}
-        	});
+       	//copy file link
+       	document.querySelector(".file_row").addEventListener("click", (event) => {
+       		var copyText = event.target.querySelector("span");
+       		
+       		if(event.target.innerHTML == "Get Link" || copyText.innerHTML == "Get Link"){
+       			
+       			if(event.target.innerHTML == "Get Link" ){
+       				var value = event.target.parentElement.href;
+       			}else if(copyText.innerHTML == "Get Link"){
+       				var value = event.target.href;
+       			}
+       			
+       			const input = document.createElement('input');
+           		input.value = value;
+           		console.log(event.target.parentElement.href)
+   				document.body.appendChild(input);
+   				input.select();
+   				document.execCommand('copy');
+   			    document.body.removeChild(input);
+       			
+       		}
+       		
+       	});
+        	
+       	//download file
+       	document.querySelector(".file_row").addEventListener("click", (event) => {
+       		var download = event.target.querySelector("span");
+       		
+       		
+       		if(event.target.innerHTML == "Download" || download.innerHTML == "Download" ){
+       			if(event.target.innerHTML == "Download"){
+       				var file_name = event.target.getAttribute('data-name');
+       			}else if(download.innerHTML == "Download"){
+       				var file_name = download.getAttribute('data-name');
+       			}
+       			//alert(file_name)
+       			$.ajax({
+   			      url: '/dms/download',
+   			      timeout: 30000,
+   			      method: 'POST',
+   			      dataType: 'JSON',
+   			      data : {
+   			        filename: file_name,
+   			      },
+   			      success: function (response) {
+   			        alert(response.message)
+   			      },
+   			      error: function(){
+   			       
+   			      }
+   			  });
+       			
+       		}
+       		
+       		});
 		    
 	    })
 	</script>
@@ -417,29 +446,87 @@
 	
 		 document.addEventListener("DOMContentLoaded", function(){
 			 
-				// make the preview modal show file type 
-			    document.querySelector(".file_div").addEventListener("click", (event) => {
-			    	
-			    	var file_type = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.previousElementSibling.previousElementSibling.value;
-			    	//alert(file_type)
-			    	if(file_type == 'image'){
-			    		var image_link = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.previousElementSibling.value;
-			    		document.getElementById('preview_title').innerHTML = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value;  
-			    		document.getElementById("preview_div").innerHTML = "<img src='"+image_link+"' width='90%' height='300'/>"
-			    	}else{
-				    	document.getElementById('preview_title').innerHTML = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value;  
-				    	var iframe_link = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.previousElementSibling.value;
-				    	document.getElementById("preview_div").innerHTML = "<iframe src='"+iframe_link+"' width='100%' height='300' class=''  id='preview_iframe' loading='lazy' allowtransparency=true' allowfullscreen ></iframe>";
-			    	}
-			    })
-			    
-			    
-			   // make value for renaming file show in form field
-		      document.querySelector(".file_div").addEventListener("click", (event) => {
-		    	//alert(event.target.nextElementSibling.value)
-		    	document.getElementById('rename_file_modal_value').value = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value; 
-		    	document.getElementById('file_id').value = event.target.nextElementSibling.value;
+			// make the preview modal show file type 
+		    document.querySelector(".file_div").addEventListener("click", (event) => {
+		    	
+		    	var file_type = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.previousElementSibling.previousElementSibling.value;
+		    	//alert(file_type)
+		    	if(file_type == 'image'){
+		    		var image_link = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.previousElementSibling.value;
+		    		document.getElementById('preview_title').innerHTML = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value;  
+		    		document.getElementById("preview_div").innerHTML = "<img src='"+image_link+"' width='90%' height='300'/>"
+		    	}else{
+			    	document.getElementById('preview_title').innerHTML = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value;  
+			    	var iframe_link = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.previousElementSibling.value;
+			    	document.getElementById("preview_div").innerHTML = "<iframe src='"+iframe_link+"' width='100%' height='300' class=''  id='preview_iframe' loading='lazy' allowtransparency=true' allowfullscreen ></iframe>";
+		    	}
 		    })
+			    
+			    
+		  // make value for renaming file show in form field
+	      document.querySelector(".file_div").addEventListener("click", (event) => {
+	    	//alert(event.target.nextElementSibling.value)
+	    	document.getElementById('rename_file_modal_value').value = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value; 
+	    	document.getElementById('file_id').value = event.target.nextElementSibling.value;
+	     })
+		    
+	  	 //copy file link
+         document.querySelector(".file_div").addEventListener("click", (event) => {
+       		var copyText = event.target.querySelector("span");
+       		
+			if(event.target.innerHTML == "Get Link" || copyText.innerHTML == "Get Link"){
+       			
+       			if(event.target.innerHTML == "Get Link" ){
+       				var value = event.target.parentElement.href;
+       			}else if(copyText.innerHTML == "Get Link"){
+       				var value = event.target.href;
+       			}
+       			
+       			const input = document.createElement('input');
+           		input.value = value;
+           		console.log(event.target.parentElement.href)
+   				document.body.appendChild(input);
+   				input.select();
+   				document.execCommand('copy');
+   			    document.body.removeChild(input);
+       			
+       		}
+			
+       	});
+			
+	  	//download file
+       	document.querySelector(".file_row").addEventListener("click", (event) => {
+       		var download = event.target.querySelector("span");
+       		
+       		
+      		if(event.target.innerHTML == "Download" || download.innerHTML == "Download" ){
+      			
+      			if(event.target.innerHTML == "Download"){
+      				var file_name = event.target.getAttribute('data-name');
+      			}else if(download.innerHTML == "Download"){
+      				var file_name = download.getAttribute('data-name');
+      			}
+      			//alert(file_name)
+     			$.ajax({
+     			      url: '/dms/download',
+     			      timeout: 30000,
+     			      method: 'POST',
+     			      dataType: 'JSON',
+     			      data : {
+     			        filename: file_name,
+     			      },
+     			      success: function (response) {
+     			        alert(response.message)
+     			      },
+     			      error: function(){
+     			       
+     			      }
+     			    });
+       			
+       			}
+	        		
+	        });
+        	
 			 
 		 })
 	
