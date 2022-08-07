@@ -70,7 +70,8 @@
 		              	<div class="col-lg-2 col-md-3 col-6 mb-3">
 		              		<a href="folder?folder=${folderItem.id}&parent_folder=${folderItem.folderId}"><c:if test="${folderItem.favStatus == 1}" ><i class='bx bxs-star'></i></c:if><c:if test="${folderItem.favStatus != 1}" ><i class='bx bxs-star' style="color: #F5F5F9;"></i></c:if><i class='bx bxs-folder' style='color:#8588ff; font-size: 155px;'></i></a>
 		              		<button class="btn" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		              			<span class="me-xxl-1  file_name" >${folderItem.folderName}  </span><i class="bx bx-dots-vertical-rounded"></i>
+		              			<span class="me-xxl-1  file_name" >${fn:substring(folderItem.folderName, 0, 8)}  </span><i class="bx bx-dots-vertical-rounded"></i>
+	              				<input type='hidden' name="real_name" value="${folderItem.folderName}" />
 							</button>
 		              		<div class="dropdown-menu" aria-labelledby="cardOpt6">
 			                  <a class="dropdown-item" href="folder?folder=${folderItem.id}&parent_folder=${folderItem.folderId}"><i class='bx bx-folder-open'></i> Open</a>

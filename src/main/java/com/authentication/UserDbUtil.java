@@ -57,29 +57,6 @@ public class UserDbUtil {
 		
 	}
 
-	private void close(Connection Conn, PreparedStatement myStmt, ResultSet myRs) {
-		// TODO Auto-generated method stub
-		
-		try {
-			
-			if(myRs != null) {
-				myRs.close();
-			}
-			
-			if(myStmt != null) {
-				myStmt.close();
-			}
-			
-			if(Conn != null) {
-				Conn.close();
-			}
-		}
-		catch(Exception exc){
-			exc.printStackTrace();
-		}
-		
-	}
-
 	public User loginUser(User user) throws SQLException {
 
 		PreparedStatement myStmt = null;
@@ -92,7 +69,7 @@ public class UserDbUtil {
 		myConn = dataSource.getConnection();
 					
 		// create sql for insert
-		String sql = "SELECT * FROM user WHERE email = ? AND password = ?";
+		String sql = "SELECT * FROM user WHERE email = ? AND password = ? AND account_status = '1'";
 		
 		// create prepared statement
 		myStmt = myConn.prepareStatement(sql);
@@ -125,5 +102,171 @@ public class UserDbUtil {
 			close(myConn, myStmt, myRs);
 		}
 	}
+	
+	public String updateSettings(User updatedUser) throws SQLException {
 
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		
+		try {
+			
+			// get db connection
+			myConn = dataSource.getConnection();
+						
+			// create sql for insert
+			String sql = "UPDATE user SET firstname = ?, lastname = ?, email = ? WHERE id = ?";
+			
+			// create prepared statement
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
+			myStmt.setString(1, updatedUser.getFirstname());
+			myStmt.setString(2, updatedUser.getLastname());
+			myStmt.setString(3, updatedUser.getEmail());
+			myStmt.setInt(4, updatedUser.getId());
+			
+			
+				try {
+					// execute SQL statement
+					int rowCount = myStmt.executeUpdate();
+					
+					if(rowCount > 0) {
+						// if success
+						return "settings_success";
+						
+						//return newFolder.toString();
+						
+					}else {
+						// if failed
+						return "settings_failed";
+					}
+				}
+				catch (SQLException e) {
+				   
+				    throw new SQLException("SQL error");
+				}
+			
+			} finally {
+				
+				// close JDBC object
+				close(myConn, myStmt, myRs);
+			}
+		
+	}
+
+	public boolean deactivateAccount(int userId) throws SQLException {
+
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		
+		try {
+			
+			// get db connection
+			myConn = dataSource.getConnection();
+						
+			// create sql for insert
+			String sql = "UPDATE user SET account_status = '0' WHERE id = ?";
+			
+			// create prepared statement
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
+			myStmt.setInt(1, userId);
+		
+				try {
+					// execute SQL statement
+					int rowCount = myStmt.executeUpdate();
+					
+					if(rowCount > 0) {
+						// if success
+						return true;
+						
+						//return newFolder.toString();
+						
+					}else {
+						// if failed
+						return false;
+					}
+				}
+				catch (SQLException e) {
+				   
+				    throw new SQLException("SQL error");
+				}
+			
+			} finally {
+				
+				// close JDBC object
+				close(myConn, myStmt, myRs);
+			}
+		
+	}
+
+	public String updatePassword(int userId, String passwordHash) throws SQLException {
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		
+		try {
+			
+			// get db connection
+			myConn = dataSource.getConnection();
+						
+			// create sql for insert
+			String sql = "UPDATE user SET password = ? WHERE id = ?";
+			
+			// create prepared statement
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
+			myStmt.setString(1, passwordHash);
+			myStmt.setInt(2, userId);
+		
+				try {
+					// execute SQL statement
+					int rowCount = myStmt.executeUpdate();
+					
+					if(rowCount > 0) {
+						// if success
+						return "password_success";
+						
+						//return newFolder.toString();
+						
+					}else {
+						// if failed
+						return "password_failed";
+					}
+				}
+				catch (SQLException e) {
+				   
+				    throw new SQLException("SQL error");
+				}
+			
+			} finally {
+				
+				// close JDBC object
+				close(myConn, myStmt, myRs);
+			}
+	}
+
+	private void close(Connection Conn, PreparedStatement myStmt, ResultSet myRs) {
+		// TODO Auto-generated method stub
+		
+		try {
+			
+			if(myRs != null) {
+				myRs.close();
+			}
+			
+			if(myStmt != null) {
+				myStmt.close();
+			}
+			
+			if(Conn != null) {
+				Conn.close();
+			}
+		}
+		catch(Exception exc){
+			exc.printStackTrace();
+		}
+		
+	}
 }

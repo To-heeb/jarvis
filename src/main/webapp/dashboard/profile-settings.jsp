@@ -87,8 +87,8 @@
                     </div>
                     <hr class="my-0" />
                     <div class="card-body">
-                      <form id="formAccountSettings" action="" method="POST" onsubmit="return false">
-                      	<input type="hidden" name="organization" value="ThemeSelection" />
+                      <form id="formAccountSettings" action="update_settings" method="POST">
+                      	<input type="hidden" name="form_type" value="settings" />
                         <div class="row">
                           <div class="mb-3 col-md-6">
                             <label for="firstName" class="form-label">First Name</label>
@@ -96,15 +96,15 @@
                               class="form-control"
                               type="text"
                               id="firstName"
-                              name="firstName" 
-                              value="${sessionScope.firstname}"
+                              name="first_name" 
+                              value="${user_info.firstname}"
                               autofocus
                               required
                             />
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="lastName" class="form-label">Last Name</label>
-                            <input class="form-control" type="text" name="lastName" id="lastName" value="${sessionScope.lastname}" />
+                            <input class="form-control" type="text" name="last_name" id="lastName" value="${user_info.lastname}" required/>
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="email" class="form-label">E-mail</label>
@@ -113,7 +113,7 @@
                               type="text"
                               id="email"
                               name="email"
-                              value="${sessionScope.email}"
+                              value="${user_info.email}"
                               placeholder="john.doe@example.com"
                               required
                             />
@@ -140,7 +140,8 @@
                   <div class="card mb-4">
                     <h5 class="card-header">Password Update</h5>
                     <div class="card-body">
-                      <form id="password_update" method="POST" action="">
+                      <form id="password_update" action="password" method="POST">
+                      <input type="hidden" name="form_type" value="password" />
                         <div class="row">
                           <div class="mb-3 col-md-6">
                             <label for="password" class="form-label">New Password</label>
@@ -154,14 +155,44 @@
 	                              aria-describedby="password"
 	                              required
 	                            />
-	                            <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+	                            <span class="input-group-text cursor-pointer">
+	                            <i class="bx bx-hide" 
+	                            onclick="
+	                            	
+	                            	if(this.parentElement.previousElementSibling.type == 'password'){
+	                            		this.classList.remove('bx-hide')
+	                            		this.classList.add('bx-show')
+	                            		this.parentElement.previousElementSibling.type = 'text'
+	                            		//alert(this.parentElement.previousElementSibling.type)
+	                            	}else{
+	                            		this.classList.remove('bx-show')
+	                            		this.classList.add('bx-hide')
+	                            		this.parentElement.previousElementSibling.type = 'password'
+	                            	}
+	                            "
+	                            ></i></span>
                             </div>
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="confirm_password" class="form-label">Confirm New Password</label>
                             <div class="input-group input-group-merge">
                             	<input class="form-control" type="password" name="confirm_password" id="confirm_password"  aria-describedby="confirm_password" required/>
-                            	<span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                            	<span class="input-group-text cursor-pointer">
+                            	<i class="bx bx-hide" 
+                            	onclick="
+                            	
+                            		if(this.parentElement.previousElementSibling.type == 'password'){
+	                            		this.classList.remove('bx-hide')
+	                            		this.classList.add('bx-show')
+	                            		this.parentElement.previousElementSibling.type = 'text'
+	                            	}else{
+	                            		this.classList.remove('bx-show')
+	                            		this.classList.add('bx-hide')
+	                            		this.parentElement.previousElementSibling.type = 'password'
+	                            	}	
+                            	
+	                            "
+	                            ></i></span>
                             </div>
                           </div>
                         </div>
@@ -170,15 +201,16 @@
                     </div>
                   </div>
                   <div class="card">
-                    <h5 class="card-header">Delete Account</h5>
+                    <h5 class="card-header">Deactivation Account</h5>
                     <div class="card-body">
                       <div class="mb-3 col-12 mb-0">
                         <div class="alert alert-warning">
-                          <h6 class="alert-heading fw-bold mb-1">Are you sure you want to delete your account?</h6>
-                          <p class="mb-0">Once you delete your account, there is no going back. Please be certain.</p>
+                          <h6 class="alert-heading fw-bold mb-1">Are you sure you want to deactivate your account?</h6>
+                          <p class="mb-0">Once you deactivate your account, cannot be reactivated again. Please be certain.</p>
                         </div>
                       </div>
-                      <form id="formAccountDeactivation" onsubmit="return false">
+                      <form id="formAccountDeactivation" action="deactivate" method="POST">
+                       <input type="hidden" name="form_type" value="deactivate" />
                         <div class="form-check mb-3">
                           <input
                             class="form-check-input"
@@ -226,6 +258,8 @@
         
        		 <!-- / Modal for previewing files -->
 
+			<input type="hidden" id="status" value="<%= request.getParameter("status") %>" />
+			
             <!-- Footer -->
             	<jsp:include page="footnav.jsp"></jsp:include>
             <!-- / Footer -->

@@ -48,6 +48,16 @@ public class Folder {
 		this.parentFolderId = parent_folder_id;
 	}
 
+	public Folder(int id, int folder_id, String folder_name, int fav_status, int trash_status,Date created_at,Date updated_at) {
+		this.id = id;
+		this.folderId = folder_id;
+		this.folderName = folder_name;
+		this.favStatus = fav_status;
+		this.trashStatus = trash_status;
+		this.createdAt = created_at;
+		this.updatedAt = updated_at;
+	}
+
 	public int getId() {
 		return id;
 	}

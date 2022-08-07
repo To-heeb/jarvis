@@ -10,7 +10,9 @@
 %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; utf-8" pageEncoding="utf-8" %>
+
 
   <!-- Header -->
   <jsp:include page="header.jsp"></jsp:include>
@@ -72,7 +74,9 @@
 			              	<div class="col-lg-2 col-md-3 col-6 mb-3">
 			              		<a href="folder?folder=${folderItem.id}&parent_folder=${folderItem.folderId}"><c:if test="${folderItem.favStatus == 1}" ><i class='bx bxs-star'></i></c:if><c:if test="${folderItem.favStatus != 1}" ><i class='bx bxs-star' style="color: #F5F5F9;"></i></c:if><i class='bx bxs-folder' style='color:#8588ff; font-size: 155px;'></i></a>
 			              		<button class="btn" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			              			<span class="me-xxl-1  file_name" >${folderItem.folderName}  </span><i class="bx bx-dots-vertical-rounded"></i>
+			              			<span class="me-xxl-1  file_name" >${fn:substring(folderItem.folderName, 0, 9)}</span><i class="bx bx-dots-vertical-rounded"></i>
+			              			<div class="text-small"><small>Uploaded on <fmt:formatDate value="${folderItem.createdAt}" var="formattedDate" type="date" pattern="MM-dd-yyyy" /> ${formattedDate}</small></div>
+	              					<input type='hidden' name="real_name" value="${folderItem.folderName}" />
 								</button>
 			              		<div class="dropdown-menu" aria-labelledby="cardOpt6">
 				                  <a class="dropdown-item" href="folder?folder=${folderItem.id}&parent_folder=${folderItem.folderId}"><i class='bx bx-folder-open'></i> Open</a>
@@ -168,9 +172,11 @@
 							      </c:choose>
 							      	<input type="hidden" class="file_type" value="${fileItem.fileCategory}"/>
 						            <input type="hidden" class="file_link" value="<%= baseURL+"file_upload/"%>${fileItem.newName}"/>
-						            <small class="text-success fw-semibold">${fileItem.displayName}</small>
+						            <input type="hidden" class="file_name" value="${fileItem.displayName}"/> 
+						            <small class="text-success fw-semibold">${fn:substring(fileItem.displayName, 0, 9)}</small>
 						          </div>
 						        </div>
+						        	<div class="text-small text-center"><small>Uploaded on <br><fmt:formatDate value="${fileItem.createdAt}" var="formattedDate" type="date" pattern="MM-dd-yyyy" /> ${formattedDate}</small></div>
 						      </div>
 					      </c:forEach>
 		              </div>
@@ -182,6 +188,12 @@
         		<jsp:include page="rename_modal.jsp"></jsp:include>
         
        		 <!-- / Modal for renaming folder -->
+       		 
+       		 <!-- Modal for renaming file-->
+       
+        		<jsp:include page="rename_file_modal.jsp"></jsp:include>
+        
+       		 <!-- / Modal for renaming file -->
        		 
        		 
              <!-- Modal for uploading files -->

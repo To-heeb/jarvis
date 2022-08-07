@@ -20,6 +20,22 @@ public class User {
 		this.password = password;
 	}
 	
+	public User(int id, String firstname, String lastname, String email) {
+		this.id = id;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+	}
+	
+	public User(int id, String firstname, String lastname, String email, String role,  String profilePicture) {
+		this.id = id;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+		this.role = role;
+		this.profilePicture = profilePicture;
+	}
+	
 	public User(int id, String firstname, String lastname, String email, String role, String memoryUsage, String profilePicture, boolean status) {
 		this.id = id;
 		this.firstname = firstname;
@@ -31,15 +47,13 @@ public class User {
 		this.status = status;
 	}
 	
-	public boolean isStatus() {
-		return status;
+	public User(String firstname, String lastname, String email) {
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
 	}
 
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-
-	public User( String firstname, String lastname, String email, String password) {
+	public User(String firstname, String lastname, String email, String password) {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.email = email;
@@ -49,6 +63,14 @@ public class User {
 	public User(String email, String password) {
 		this.email = email;
 		this.password = password;
+	}
+	
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 	public int getId() {

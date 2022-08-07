@@ -194,27 +194,28 @@
 		    
 		 	// make value for renaming folder show in form field
 		    document.querySelector(".folder_row").addEventListener("click", (event) => {
-		    	document.getElementById('rename_modal_value').value = event.target.parentElement.previousElementSibling.firstElementChild.innerHTML; 
+		    	document.getElementById('rename_modal_value').value = event.target.parentElement.previousElementSibling.lastElementChild.value; 
 		    	document.getElementById('folder_id').value = event.target.nextElementSibling.value;
 		    })
 		    
 		    // make value for renaming file show in form field
 		    document.querySelector(".file_row").addEventListener("click", (event) => {
-		    	document.getElementById('rename_file_modal_value').value = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.innerHTML; 
+		    	//alert(event.target.nextElementSibling.value)
+		    	document.getElementById('rename_file_modal_value').value = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value; 
 		    	document.getElementById('file_id').value = event.target.nextElementSibling.value;
 		    })
 		    
 		    // make the preview modal show file type
 		    document.querySelector(".file_row").addEventListener("click", (event) => {
-		    	var file_type = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.previousElementSibling.value; 
+		    	var file_type = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.previousElementSibling.previousElementSibling.value; 
 		    	//alert(file_type)
 		    	if(file_type == 'image'){
-		    		var image_link = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value;
-		    		document.getElementById('preview_title').innerHTML = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.innerHTML; 
+		    		var image_link = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.previousElementSibling.value;
+		    		document.getElementById('preview_title').innerHTML = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value; 
 		    		document.getElementById("preview_div").innerHTML = "<img src='"+image_link+"' width='90%' height='300'/>"
 		    	}else{
-			    	document.getElementById('preview_title').innerHTML = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.innerHTML; 
-			    	var iframe_link = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value;
+			    	document.getElementById('preview_title').innerHTML = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value; 
+			    	var iframe_link = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.previousElementSibling.value;
 			    	document.getElementById("preview_div").innerHTML = "<iframe src='"+iframe_link+"' width='100%' height='300' class=''  id='preview_iframe' loading='lazy' allowtransparency=true' allowfullscreen ></iframe>";
 			    	//console.dir(document.getElementById('preview_iframe'))
 		    	}
@@ -226,6 +227,7 @@
 			// get dashboard url
 			String url = request.getRequestURL().toString();
 			String dashboardURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/dashboard/home";
+			String settingsURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/dashboard/settings";
 			
 			%>
 	
@@ -378,7 +380,7 @@
                     location.href = "<%= dashboardURL %>";
                 });
         	}
-        	
+      
         	
         	//copy file link
         	document.querySelector(".file_row").addEventListener("click", (event) => {
@@ -433,6 +435,140 @@
 			 
 		 })
 	
+	</script>
+	<script type="text/javascript">
+	
+	document.addEventListener("DOMContentLoaded", function(){
+		//
+		let setting_status = document.querySelector("#status").value;
+	
+		if(setting_status == "settings_error"){
+			Swal.fire({
+				  icon: 'error',
+				  title: 'Oops...',
+				  text: 'All Fields are compulsory ',
+				  showConfirmButton: false,
+				  showClass: {
+					    popup: 'animate__animated animate__fadeInDown'
+					  },
+					  hideClass: {
+					    popup: 'animate__animated animate__fadeOutUp'
+					  },
+				  timer: 2000
+			}).then(() => {
+			    
+				 location.href = "<%= settingsURL %>";
+	        });
+		}
+		
+		if(setting_status == "settings_failed"){
+    		Swal.fire({
+    			  icon: 'error',
+    			  title: 'Oops...',
+    			  text: 'Something went wrong please try again later.',
+    			  showConfirmButton: false,
+    			  showClass: {
+  				    popup: 'animate__animated animate__fadeInDown'
+  				  },
+ 				  hideClass: {
+ 				    popup: 'animate__animated animate__fadeOutUp'
+ 				  },
+    			  timer: 2000
+    		}).then(() => {
+    			 location.href = "<%= settingsURL %>";
+            });
+    	}
+    	
+    	if(setting_status == "settings_success"){
+    		Swal.fire({
+    			  icon: 'success',
+   			  	  title: 'Great',
+   			  	  text: 'Settings Updated Successfully',
+    			  showConfirmButton: false,
+    			  showClass: {
+  				    popup: 'animate__animated animate__fadeInDown'
+  				  },
+ 				  hideClass: {
+ 				    popup: 'animate__animated animate__fadeOutUp'
+ 				  },
+    			  timer: 2000
+    		}).then(() => {
+                location.href = "<%= settingsURL %>";
+            });
+    	}
+    	
+    	if(setting_status == "deactivate_error"){
+    		Swal.fire({
+    			  icon: 'error',
+  			  	  title: 'Oops...',
+  			      text: 'Something went wrong please try again later.',
+    			  showConfirmButton: false,
+    			  showClass: {
+  				    popup: 'animate__animated animate__fadeInDown'
+  				  },
+ 				  hideClass: {
+ 				    popup: 'animate__animated animate__fadeOutUp'
+ 				  },
+    			  timer: 2000
+    		}).then(() => {
+                location.href = "<%= settingsURL %>";
+            });
+    	}
+    	
+    	if(setting_status == "password_error"){
+    		Swal.fire({
+    			  icon: 'error',
+  			  	  title: 'Oops...',
+  			      text: "Password mismatch, make sure password and confirm password don't match",
+    			  showConfirmButton: false,
+    			  showClass: {
+  				    popup: 'animate__animated animate__fadeInDown'
+  				  },
+ 				  hideClass: {
+ 				    popup: 'animate__animated animate__fadeOutUp'
+ 				  },
+    			  timer: 2500
+    		}).then(() => {
+                location.href = "<%= settingsURL %>";
+            });
+    	}
+    	
+    	if(setting_status == "password_success"){
+    		Swal.fire({
+    			  icon: 'success',
+ 			  	  title: 'Great',
+ 			  	  text: 'Password Updated Successfully',
+    			  showConfirmButton: false,
+    			  showClass: {
+  				    popup: 'animate__animated animate__fadeInDown'
+  				  },
+ 				  hideClass: {
+ 				    popup: 'animate__animated animate__fadeOutUp'
+ 				  },
+    			  timer: 2000
+    		}).then(() => {
+                location.href = "<%= settingsURL %>";
+            });
+    	}
+    	
+    	if(setting_status == "password_failed"){
+    		Swal.fire({
+    			  icon: 'error',
+  			  	  title: 'Oops...',
+  			      text: 'Something went wrong please try again later.',
+    			  showConfirmButton: false,
+    			  showClass: {
+  				    popup: 'animate__animated animate__fadeInDown'
+  				  },
+ 				  hideClass: {
+ 				    popup: 'animate__animated animate__fadeOutUp'
+ 				  },
+    			  timer: 2000
+    		}).then(() => {
+                location.href = "<%= settingsURL %>";
+            });
+    	}
+	}
 	</script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>

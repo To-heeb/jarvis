@@ -38,6 +38,21 @@
   </servlet-mapping>
   
   <servlet-mapping>
+    <servlet-name>UserControllerServlet</servlet-name>
+    <url-pattern>/dashboard/update_settings</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>UserControllerServlet</servlet-name>
+    <url-pattern>/dashboard/deactivate</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>UserControllerServlet</servlet-name>
+    <url-pattern>/dashboard/password</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
     <servlet-name>DashboardControllerServlet</servlet-name>
     <url-pattern>/dashboard/home</url-pattern>
   </servlet-mapping>

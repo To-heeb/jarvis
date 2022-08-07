@@ -2,6 +2,7 @@ package com.dashboard;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+import com.authentication.User;
 
 
 
@@ -117,7 +119,12 @@ public class DashboardControllerServlet extends HttpServlet {
 			break;
 			
 		case "/dashboard/settings":
-			showSettings(request, response, "settings.jsp");
+			try {
+				showSettings(request, response, "profile-settings.jsp");
+			} catch (Exception e) {
+				//e.printStackTrace();
+				response.sendRedirect(baseURL + "dashboard/home");
+			}
 			break;
 			
 		case "/dashboard/documents":
@@ -238,6 +245,7 @@ public class DashboardControllerServlet extends HttpServlet {
 			dispatcher.forward(request, response);
 		
 	}
+	
 
 	private void listOthers(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
 			// Access session
@@ -260,6 +268,7 @@ public class DashboardControllerServlet extends HttpServlet {
 			// forward the request to JSP
 			dispatcher.forward(request, response);	
 	}
+	
 
 	private void listImages(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
 			// Access session
@@ -282,6 +291,7 @@ public class DashboardControllerServlet extends HttpServlet {
 			// forward the request to JSP
 			dispatcher.forward(request, response);	
 	}
+	
 
 	private void listAudios(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
 			// Access session
@@ -304,6 +314,7 @@ public class DashboardControllerServlet extends HttpServlet {
 			// forward the request to JSP
 			dispatcher.forward(request, response);	
 	}
+	
 
 	private void listVideos(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
 			// Access session
@@ -326,6 +337,7 @@ public class DashboardControllerServlet extends HttpServlet {
 			// forward the request to JSP
 			dispatcher.forward(request, response);	
 	}
+	
 
 	private void listDocuments(HttpServletRequest request, HttpServletResponse response, String page) throws Exception {
 			
@@ -380,11 +392,20 @@ public class DashboardControllerServlet extends HttpServlet {
 			dispatcher.forward(request, response);	
 	}
 	
-	public void sendIndex (HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-	}
-
-	private void showSettings(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+	
+	public void showSettings (HttpServletRequest request, HttpServletResponse response, String page) throws Exception {
+			// Access session
+			HttpSession session = request.getSession(true);
+			
+			//get user id
+			int userId = (int) session.getAttribute("id");
+			
+			// get user_info from db util
+			User user_info =  dashboardDbUtil.getUserInfo(userId);
+			
+			//send variable from here to view
+			request.setAttribute("user_info", user_info);
+			
 			// initiate dispatcher
 			RequestDispatcher dispatcher = request.getRequestDispatcher(page);	
 							
@@ -392,6 +413,7 @@ public class DashboardControllerServlet extends HttpServlet {
 			dispatcher.forward(request, response);
 	}
 
+	
 	private void listStarred(HttpServletRequest request, HttpServletResponse response, String page) throws Exception {
 			
 			// Access session
@@ -420,6 +442,7 @@ public class DashboardControllerServlet extends HttpServlet {
 			// forward the request to JSP
 			dispatcher.forward(request, response);
 	}
+	
 
 	private void listFolders(HttpServletRequest request, HttpServletResponse response, String page) throws Exception {
 		
@@ -432,7 +455,7 @@ public class DashboardControllerServlet extends HttpServlet {
 			Folder theFolder = new Folder(0, userId);
 			
 			// get students from db util
-			List<Folder> folders =  dashboardDbUtil.getFolders(theFolder);
+			List<Folder> folders =  dashboardDbUtil.getFoldersByUser(theFolder);
 			
 			//send variable from here to view
 			request.setAttribute("folder_list", folders);
@@ -443,6 +466,7 @@ public class DashboardControllerServlet extends HttpServlet {
 			// forward the request to JSP
 			dispatcher.forward(request, response);
 	}
+	
 
 	private void listTrash(HttpServletRequest request, HttpServletResponse response, String page) throws Exception {
 		
@@ -472,6 +496,7 @@ public class DashboardControllerServlet extends HttpServlet {
 			// forward the request to JSP
 			dispatcher.forward(request, response);
 	}
+	
 
 	private void listRecent(HttpServletRequest request, HttpServletResponse response, String page) throws Exception {
 		// Access session
@@ -500,6 +525,7 @@ public class DashboardControllerServlet extends HttpServlet {
 		// forward the request to JSP
 		dispatcher.forward(request, response);
 	}
+	
 //	
 //	public static void downloadFile(URL url, String fileName) throws Exception {
 //        try (InputStream in = url.openStream()) {

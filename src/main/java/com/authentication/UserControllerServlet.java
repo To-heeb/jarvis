@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,6 +121,18 @@ public class UserControllerServlet extends HttpServlet {
 				registerUser(request, response);
 				break;
 				
+			case "settings":
+				updateSettings(request, response);
+				break;
+			
+			case "password":
+				passwordSettings(request, response);
+				break;
+				
+			case "deactivate":
+				deactivateAccount(request, response);
+				break;
+				
 			case "homepage":
 				redirectToHomepage(request, response);
 				break;
@@ -135,6 +148,110 @@ public class UserControllerServlet extends HttpServlet {
 			throw new ServletException(exc);
 		}
 	}
+	
+	private void passwordSettings(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		
+		String url = request.getRequestURL().toString();
+		String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";
+	
+		// Access session
+		HttpSession session = request.getSession(true);
+				
+		
+		// read first name here
+		String password = request.getParameter("password").trim();
+		
+		// read last name here
+		String confirm_password = request.getParameter("confirm_password").trim();
+		
+		if(!password.equalsIgnoreCase(confirm_password)) {
+			
+			// return to settings page and throw an error
+			response.sendRedirect(baseURL + "dashboard/settings?status=password_error");
+			return;
+		}
+		//get user id
+		int userId = (int) session.getAttribute("id");
+		
+		// hash password here
+		String passwordHash = hashPasword(password);
+		
+		String status = userDbUtil.updatePassword(userId, passwordHash);
+		
+		response.sendRedirect(baseURL + "dashboard/settings?status=" + status);
+	}
+
+
+
+	private void deactivateAccount(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		
+		String url = request.getRequestURL().toString();
+		String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";
+		
+		// Access session
+		HttpSession session = request.getSession(true);
+		
+		//get user id
+		int userId = (int) session.getAttribute("id");
+		
+		boolean status = userDbUtil.deactivateAccount(userId);
+		
+		if(status) {
+			// return to settings page and throw an error
+			response.sendRedirect(baseURL);
+			return;
+		}
+		
+		response.sendRedirect(baseURL + "dashboard/settings?status=deactivate_error");
+	}
+
+
+
+	private void updateSettings(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String url = request.getRequestURL().toString();
+		String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";
+	
+		// Access session
+		HttpSession session = request.getSession(true);
+				
+		
+		// read first name here
+		String firstName = request.getParameter("first_name").trim();
+		
+		// read last name here
+		String lastName = request.getParameter("last_name").trim();
+		
+		// read email here
+		String email = request.getParameter("email").trim();
+		
+		//get user id
+		int userId = (int) session.getAttribute("id");
+		
+		if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()) {
+			
+			// return to settings page and throw an error
+			response.sendRedirect(baseURL + "dashboard/settings?status=settings_error");
+			return;
+		}
+		
+		User updatedUser = new User (userId, firstName, lastName, email);
+		
+		// update data in the db util
+		String status;
+		try {
+			
+			status = userDbUtil.updateSettings(updatedUser);
+			
+			response.sendRedirect(baseURL + "dashboard/settings?status=" + status);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+					
+	}
+
 
 	private void redirectToHomepage(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// TODO Auto-generated method stub

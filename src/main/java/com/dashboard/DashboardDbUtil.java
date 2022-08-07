@@ -3,12 +3,15 @@ package com.dashboard;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
+
+import com.authentication.User;
 
 public class DashboardDbUtil {
 
@@ -53,10 +56,11 @@ public class DashboardDbUtil {
 				String folderName = myRs.getString("folder_name");
 				int favStatus = myRs.getInt("fav_status");
 				int trashStatus = myRs.getInt("trash_status");
+				Date createdAt = myRs.getDate("updated_at");
 				Date updatedAt = myRs.getDate("updated_at");
 
 				// create new folder object
-				Folder tempFolder = new Folder(id, folderId, folderName, favStatus, trashStatus, updatedAt);
+				Folder tempFolder = new Folder(id, folderId, folderName, favStatus, trashStatus, createdAt, updatedAt);
 
 				// add it to the list of folders
 				folders.add(tempFolder);
@@ -123,6 +127,59 @@ public class DashboardDbUtil {
 		}
 		catch(Exception e) {
 			return folderData;
+		}
+		finally {
+			// close JDBC object
+			close(myConn, myStmt, myRs);
+
+		}
+	}
+	
+	public List<Folder> getFoldersByUser(Folder theFolder) {
+		List<Folder> folders = new ArrayList<>();
+
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+
+		try {
+			// get a connection
+			myConn = dataSource.getConnection();
+
+			// create a sql statement
+			String sql = "SELECT * FROM folder WHERE user_id = ? AND trash_status = '0' ";
+
+			// create prepared statement
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
+			myStmt.setInt(1, theFolder.getUserId());
+			
+			//
+			myRs = myStmt.executeQuery();
+
+			// process result set
+			while (myRs.next()) {
+
+				// retrieve data from result set row
+				int id = myRs.getInt("id");
+				int folderId = myRs.getInt("folder_id");
+				String folderName = myRs.getString("folder_name");
+				int favStatus = myRs.getInt("fav_status");
+				int trashStatus = myRs.getInt("trash_status");
+				Date updatedAt = myRs.getDate("updated_at");
+
+				// create new folder object
+				Folder tempFolder = new Folder(id, folderId, folderName, favStatus, trashStatus, updatedAt);
+
+				// add it to the list of folders
+				folders.add(tempFolder);
+
+			}
+
+			return folders;
+		}
+		catch(Exception e) {
+			return folders;
 		}
 		finally {
 			// close JDBC object
@@ -712,6 +769,53 @@ public class DashboardDbUtil {
 		}
 	}
 
+	public User getUserInfo(int userId) throws Exception {
+		
+		User userInfo = null;
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		
+		try {
+
+			// get connection to database
+			myConn = dataSource.getConnection();
+
+			// create sql to get selected student
+			String sql = "SELECT * FROM user WHERE id = ?";
+
+			// create prepared statement
+			myStmt = myConn.prepareStatement(sql);
+
+			// set params
+			myStmt.setInt(1, userId);
+
+			// execute statement
+			myRs = myStmt.executeQuery();
+
+			// retrieve data from the result set row
+			if (myRs.next()) {
+				String firstname = myRs.getString("firstname");
+				String lastname = myRs.getString("lastname");
+				String email = myRs.getString("email");
+				int id = myRs.getInt("id");
+				String profile_picture = myRs.getString("profile_image");
+				String role = myRs.getString("role");
+				
+
+				// use the user info and put construction
+				userInfo = new User(id, firstname, lastname, email, role, profile_picture);
+			} else {
+				throw new Exception("User not Found");
+			}
+
+			return userInfo;
+		} finally {
+			// clean up JDBC object
+			close(myConn, myStmt, myRs);
+		}
+
+	}
 	
 	private void close(Connection Conn, Statement myStmt, ResultSet myRs) {
 		// TODO Auto-generated method stub
@@ -735,4 +839,5 @@ public class DashboardDbUtil {
 		}
 		
 	}
+
 }

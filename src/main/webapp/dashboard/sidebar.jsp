@@ -110,7 +110,7 @@
             
             <!-- Settings -->
             <li class="menu-item">
-              <a href="profile-settings.jsp" class="menu-link">
+              <a href="settings" class="menu-link">
                 <i class='menu-icon tf-icons bx bx-cog  bx-spin-hover'></i>
                 <div data-i18n="">Settings</div>
               </a>
