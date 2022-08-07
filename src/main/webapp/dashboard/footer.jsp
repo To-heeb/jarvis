@@ -420,18 +420,26 @@
 				// make the preview modal show file type 
 			    document.querySelector(".file_div").addEventListener("click", (event) => {
 			    	
-			    	var file_type = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.previousElementSibling.value;
+			    	var file_type = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.previousElementSibling.previousElementSibling.value;
 			    	//alert(file_type)
 			    	if(file_type == 'image'){
-			    		var image_link = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value;
-			    		document.getElementById('preview_title').innerHTML = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.innerHTML; 
+			    		var image_link = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.previousElementSibling.value;
+			    		document.getElementById('preview_title').innerHTML = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value;  
 			    		document.getElementById("preview_div").innerHTML = "<img src='"+image_link+"' width='90%' height='300'/>"
 			    	}else{
-				    	document.getElementById('preview_title').innerHTML = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.innerHTML; 
-				    	var iframe_link = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value;
+				    	document.getElementById('preview_title').innerHTML = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value;  
+				    	var iframe_link = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.previousElementSibling.value;
 				    	document.getElementById("preview_div").innerHTML = "<iframe src='"+iframe_link+"' width='100%' height='300' class=''  id='preview_iframe' loading='lazy' allowtransparency=true' allowfullscreen ></iframe>";
 			    	}
 			    })
+			    
+			    
+			   // make value for renaming file show in form field
+		      document.querySelector(".file_div").addEventListener("click", (event) => {
+		    	//alert(event.target.nextElementSibling.value)
+		    	document.getElementById('rename_file_modal_value').value = event.target.parentElement.parentElement.parentElement.parentElement.lastElementChild.previousElementSibling.value; 
+		    	document.getElementById('file_id').value = event.target.nextElementSibling.value;
+		    })
 			 
 		 })
 	

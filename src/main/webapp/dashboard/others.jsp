@@ -103,7 +103,8 @@
 									     <span><a href = "<%= baseURL+"file_upload/"%>${fileItem.newName}" target="_blank"><img src="../dashboard_assets/img/icons/unicons/paper.png" class="w-100 mb-1 border border-primary p-3 border-2 rounded" width="" height="100px"></a></span>  
 							            <input type="hidden" class="file_type" value="${fileItem.fileCategory}"/>
 							            <input type="hidden" class="file_link" value="<%= baseURL+"file_upload/"%>${fileItem.newName}"/>
-							            <small class="text-success fw-semibold">${fileItem.displayName}</small>
+							            <input type="hidden" class="file_name" value="${fileItem.displayName}"/>
+							            <small class="text-success fw-semibold">${fn:substring(fileItem.displayName, 0, 9)}</small>
 							          </div>
 							        </div>
 							      </div>
@@ -118,6 +119,12 @@
         		<jsp:include page="rename_modal.jsp"></jsp:include>
         
        		 <!-- / Modal for renaming folder -->
+       		 
+       		 <!-- Modal for renaming file-->
+       
+        		<jsp:include page="rename_file_modal.jsp"></jsp:include>
+        
+       		 <!-- / Modal for renaming file -->
        		 
        		 
              <!-- Modal for uploading files -->

@@ -102,7 +102,8 @@
 									     <span><a href = "<%= baseURL+"file_upload/"%>${audioItem.newName}" target="_blank"><img src="../dashboard_assets/img/demo/audio-waves.png" class="w-100 mb-1 border border-primary p-3 border-2 rounded" width="" height="100px"></a></span>  
 							            <input type="hidden" class="file_type" value="${audioItem.fileCategory}"/>
 							            <input type="hidden" class="file_link" value="<%= baseURL+"file_upload/"%>${audioItem.newName}"/>
-							            <small class="text-success fw-semibold">${audioItem.displayName}</small>
+							            <input type="hidden" class="file_name" value="${audioItem.displayName}"/>
+							            <small class="text-success fw-semibold">${fn:substring(audioItem.displayName, 0, 9)}</small>
 							          </div>
 							        </div>
 							      </div>
@@ -119,6 +120,11 @@
         
        		 <!-- / Modal for renaming folder -->
        		 
+       		 <!-- Modal for renaming file-->
+       
+        		<jsp:include page="rename_file_modal.jsp"></jsp:include>
+        
+       		 <!-- / Modal for renaming file -->
        		 
              <!-- Modal for uploading files -->
        
