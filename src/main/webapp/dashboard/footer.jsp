@@ -43,7 +43,7 @@
 		 	
 		 	// Dropzone instance
 			var myDropzone = new Dropzone(".dropzone", {
-		    	url : "/dms/upload",
+		    	url : "/dms/upload_encrypted",
 		    	autoDiscover: false,
 		        paramName: "uploaded_file",
 		        maxFilesize: 1000,
@@ -60,7 +60,7 @@
 	        		  var folder_id = document.querySelector("#folder_id_ajax").value;
 	        		  console.log(folder_id)
 	        		  formData.append("folder_id", folder_id);
-	        		  
+	   
 	        		 Swal.fire({
 	                        html: "Encrypting file....",
 	                        allowOutsideClick: false,

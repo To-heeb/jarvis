@@ -15,6 +15,9 @@ public class Filex {
 	private String fileSize;
 	private String fileHash;
 	private String filePath;
+	private String encryptedAesKey;
+	private String encryptedPublicKey;
+	private String encryptedPrivateKey;
 	private Date updatedAt;
 	private Date createdAt;
 	private int favStatus;
@@ -71,8 +74,25 @@ public class Filex {
 		this.fileSize = fileSize;
 		this.fileHash = fileHash;
 		this.filePath = filePath;
+		
 	}
 
+	public Filex(int userId, int folderId, String displayName, String newName, String fileType, String fileCategory, String fileSize,
+			String fileHash, String filePath, String encryptedAesKey, String encryptedPublicKey, String encryptedPrivateKey) {
+		super();
+		this.userId = userId;
+		this.folderId = folderId;
+		this.displayName = displayName;
+		this.newName = newName;
+		this.fileType = fileType;
+		this.fileCategory = fileCategory;
+		this.fileSize = fileSize;
+		this.fileHash = fileHash;
+		this.filePath = filePath;
+		this.encryptedAesKey = encryptedAesKey;
+		this.encryptedPublicKey = encryptedPublicKey;
+		this.encryptedPrivateKey = encryptedPrivateKey;
+	}
 	
 
 	public Filex(int fileId, int userId) {
@@ -121,6 +141,30 @@ public class Filex {
 	
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+	
+	public String getencryptedAesKey() {
+		return encryptedAesKey;
+	}
+	
+	public void setencryptedAesKey(String encryptedAesKey) {
+		this.encryptedAesKey = encryptedAesKey;
+	}
+	
+	public String getencryptedPublicKey() {
+		return encryptedPublicKey;
+	}
+	
+	public void setencryptedPublicKey(String encryptedPublicKey) {
+		this.encryptedPublicKey = encryptedPublicKey;
+	}
+	
+	public String getencryptedPrivateKey() {
+		return encryptedPrivateKey;
+	}
+	
+	public void setencryptedPrivateKey(String encryptedPrivateKey) {
+		this.encryptedPrivateKey = encryptedPrivateKey;
 	}
 	
 	public String getDisplayName() {
