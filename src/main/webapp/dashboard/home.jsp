@@ -233,7 +233,7 @@
 				                  <a class="dropdown-item getlink" href="${fileItem.filePath}"><i class='bx bx-link-alt'></i> <span>Get Link</span></a>
 				                  <a class="dropdown-item rename_link" href="#" data-bs-toggle="modal" data-bs-target="#rename_file_modal"><i class='bx bx-edit-alt'></i> Rename</a>
 				                  <input type="hidden" class="file_id" value="${fileItem.id}">
-				                  <a class="dropdown-item" href="/dms/download?filename=${fileItem.newName}" download="${fileItem.displayName}"><i class='bx bx-cloud-download' ></i> <span data-name="${fileItem.newName}" >Download</span></a>
+				                  <a class="dropdown-item" href="/dms/upload_encrypted?filename=${fileItem.newName}&file_id=${fileItem.id}" download="${fileItem.displayName}"><i class='bx bx-cloud-download' ></i> <span data-name="${fileItem.newName}" >Download</span></a>
 				                  <hr>
 				                  <a class="dropdown-item" href="route_file?command=TRASH&file_id=${fileItem.id}"><i class='bx bx-trash'></i> Delete</a>
 				                </div>

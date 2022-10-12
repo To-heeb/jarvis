@@ -99,7 +99,58 @@ public class EncryptionUploadController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		//Step 2: get the printwriter
+				PrintWriter out = response.getWriter();
+				
+				String filename = request.getParameter("filename");
+				
+				String fileId = request.getParameter("file_id").trim();
+				
+				// Access session
+				HttpSession session = request.getSession(true);
+				
+				int userId = (int) session.getAttribute("id");
+				
+				int fileIdInt = Integer.parseInt(request.getParameter("file_id").trim());
+
+				//get file path string
+				String filePathString = getServletContext().getRealPath("/"+"aes_encrypted_file_upload" +File.separator + filename);
+				
+				//file to be downloaded
+				File downloadedFile = new File(filePathString);
+				
+				//get file type
+				String fileType = Files.probeContentType(downloadedFile.toPath().toAbsolutePath());
+				
+				JSONObject json = new JSONObject();
+				if(downloadedFile.exists()) {
+					
+					// create new folder object here;
+					Filex theFile = new Filex(fileIdInt, userId);
+					
+					response.setContentType(fileType);
+					response.setContentLength((int) downloadedFile.length());
+					
+					//force to download
+					String headerKey = "Content-Disposition";
+					String headerValue = String.format("attachment: filename=\"%s\"", downloadedFile.getName());
+					response.setHeader(headerKey, headerValue);
+					
+					FileInputStream fileInputStream = new FileInputStream(downloadedFile);
+					//ServletOutputStream  outputStream = response.getOutputStream();
+					
+					int bytez;
+					
+					while((bytez = fileInputStream.read()) != -1) {
+						//out.write(bytez);
+					}
+					fileInputStream.close();
+					out.close();
+								
+				}else {
+					
+					
+				}
 	}
 
 	/**
@@ -238,7 +289,7 @@ public class EncryptionUploadController extends HttpServlet {
 			    	
 			    	System.out.println("encryptedAesKey: " +encryptedAesKey);
 					System.out.println("encryptedPublicKey: " +encryptedPublicKey);
-					System.out.println("encryptedPublicKey: " +encryptedPublicKey);
+					System.out.println("encryptedPrivateKey: " +encryptedPrivateKey);
 					
 			    }else {
 			    	json.put("status", "error");

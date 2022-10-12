@@ -143,27 +143,27 @@ public class Filex {
 		this.userId = userId;
 	}
 	
-	public String getencryptedAesKey() {
+	public String getEncryptedAesKey() {
 		return encryptedAesKey;
 	}
 	
-	public void setencryptedAesKey(String encryptedAesKey) {
+	public void setEncryptedAesKey(String encryptedAesKey) {
 		this.encryptedAesKey = encryptedAesKey;
 	}
 	
-	public String getencryptedPublicKey() {
+	public String getEncryptedPublicKey() {
 		return encryptedPublicKey;
 	}
 	
-	public void setencryptedPublicKey(String encryptedPublicKey) {
+	public void setEncryptedPublicKey(String encryptedPublicKey) {
 		this.encryptedPublicKey = encryptedPublicKey;
 	}
 	
-	public String getencryptedPrivateKey() {
+	public String getEncryptedPrivateKey() {
 		return encryptedPrivateKey;
 	}
 	
-	public void setencryptedPrivateKey(String encryptedPrivateKey) {
+	public void setEncryptedPrivateKey(String encryptedPrivateKey) {
 		this.encryptedPrivateKey = encryptedPrivateKey;
 	}
 	

@@ -8,6 +8,8 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
+import com.authentication.User;
+
 public class FileDbUtil {
 
 
@@ -29,7 +31,7 @@ public class FileDbUtil {
 			myConn = dataSource.getConnection();
 			
 			// create sql for insert
-			String sql = "INSERT INTO file (user_id, folder_id, file_displayname, file_newname, file_type, file_category, file_size, file_hash, file_path) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO file (user_id, folder_id, file_displayname, file_newname, file_type, file_category, file_size, file_hash, file_path, aes_key, rsa_priv_key, rsa_pub_key) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			myStmt = myConn.prepareStatement(sql);
 			// set the param values for the student
@@ -42,6 +44,9 @@ public class FileDbUtil {
 			myStmt.setString(7, newFile.getFileSize());
 			myStmt.setString(8, newFile.getFileHash());
 			myStmt.setString(9, newFile.getFilePath());
+			myStmt.setString(10, newFile.getEncryptedAesKey());
+			myStmt.setString(11, newFile.getEncryptedPublicKey());
+			myStmt.setString(12, newFile.getEncryptedPrivateKey());
 			
 			
 			try {
@@ -300,6 +305,53 @@ public class FileDbUtil {
 
 			// close JDBC object
 			close(myConn, myStmt, null);
+		}
+	}
+	
+	public Filex getFile(Filex theFile) throws SQLException {
+
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		Filex fileData = new Filex(0, 0, null, null, null, null, null, null, null, null, null, null);
+		
+		try {
+			
+		// get db connection
+		myConn = dataSource.getConnection();
+					
+		// create sql for insert
+		String sql = "SELECT * FROM file WHERE id = ? AND user_id = ? AND trash_status = ?";
+		
+		// create prepared statement
+		myStmt = myConn.prepareStatement(sql);
+		
+		// set params
+		myStmt.setInt(1, theFile.getFileId());
+		myStmt.setInt(2, theFile.getUserId());
+		myStmt.setString(3, "0");
+		
+		// execute statement
+		myRs = myStmt.executeQuery();
+		
+		if(myRs.next()) {
+			int id = myRs.getInt("id");
+			String firstname = myRs.getString("firstname");
+			String lastname = myRs.getString("lastname");
+			String email = myRs.getString("email");
+			String role = myRs.getString("role");
+			String memory = myRs.getString("memory_usage");
+			String image = myRs.getString("profile_image");
+			
+			return new Filex(0, 0, null, null, null, null, null, null, null, null, null, null);
+		}
+			
+		return fileData;
+		
+		}
+		finally {
+			
+			// close JDBC object
+			close(myConn, myStmt, myRs);
 		}
 	}
 	
