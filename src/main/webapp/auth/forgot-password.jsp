@@ -77,7 +77,7 @@
             <div class="card-body">
               <!-- Logo -->
               <div class="app-brand justify-content-center">
-                <a href="index.html" class="app-brand-link gap-2">
+                <a href="/dms" class="app-brand-link gap-2">
                   <span class="app-brand-logo demo">
                     <svg
                       width="25"
@@ -133,7 +133,7 @@
                       </g>
                     </svg>
                   </span>
-                  <span class="app-brand-text demo text-body fw-bolder">DMS</span>
+                  <span class="app-brand-text demo text-body fw-bolder">Jarvis</span>
                 </a>
               </div>
               <!-- /Logo -->

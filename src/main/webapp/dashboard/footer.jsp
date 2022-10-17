@@ -118,7 +118,7 @@
 			
 		 	
 			var myDropzone = new Dropzone(".modal_dropzone", {
-		    	url : "/dms/upload",
+		    	url : "/dms/upload_encrypted",
 		    	autoDiscover: false,
 		        paramName: "uploaded_file",
 		        maxFilesize: 1000,
@@ -382,6 +382,25 @@
                     location.href = "<%= dashboardURL %>";
                 });
         	}
+        	
+        	
+        	if(status == "delete_success"){
+        		Swal.fire({
+        			  icon: 'success',
+        			  title: 'Great',
+        			  text: 'File successfully deleted',
+        			  showConfirmButton: false,
+        			  showClass: {
+      				    popup: 'animate__animated animate__fadeInDown'
+      				  },
+     				  hideClass: {
+     				    popup: 'animate__animated animate__fadeOutUp'
+     				  },
+        			  timer: 2000
+        		}).then(() => {
+                    location.href = "<%= dashboardURL %>";
+                });
+        	}
       
         	
        	//copy file link
@@ -534,7 +553,7 @@
 	<script type="text/javascript">
 	
 	document.addEventListener("DOMContentLoaded", function(){
-		//
+		//alert("I am here");
 		let setting_status = document.querySelector("#status").value;
 	
 		if(setting_status == "settings_error"){
@@ -663,7 +682,7 @@
                 location.href = "<%= settingsURL %>";
             });
     	}
-	}
+	})
 	</script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>

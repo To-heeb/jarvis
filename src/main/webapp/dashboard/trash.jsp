@@ -105,7 +105,7 @@
 						                  <a class="dropdown-item" href="route_file?command=UNTRASH&file_id=${fileItem.id}"><i class='bx bx-recycle'></i> Restore</a>
 						                  <!-- <a class="dropdown-item" href="${fileItem.filePath}" download="${fileItem.displayName}"><i class='bx bx-cloud-download' ></i> Download</a> -->
 						                  <hr>
-						                  <a class="dropdown-item" href="route_file?command=DELETE&folder_id=${fileItem.id}"><i class='bx bxs-trash-alt'></i> Delete Permanently</a>
+						                  <a class="dropdown-item" href="route_file?command=DELETE&file_id=${fileItem.id}"><i class='bx bxs-trash-alt'></i> Delete Permanently</a>
 						                </div>
 						              </div>
 						            </div>

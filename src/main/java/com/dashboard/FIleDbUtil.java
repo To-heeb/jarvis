@@ -31,7 +31,7 @@ public class FileDbUtil {
 			myConn = dataSource.getConnection();
 			
 			// create sql for insert
-			String sql = "INSERT INTO file (user_id, folder_id, file_displayname, file_newname, file_type, file_category, file_size, file_hash, file_path, aes_key, rsa_priv_key, rsa_pub_key) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO file (user_id, folder_id, file_displayname, file_newname, file_type, file_category, file_size, file_hash, file_path, aes_key, rsa_pub_key,rsa_priv_key) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			myStmt = myConn.prepareStatement(sql);
 			// set the param values for the student
@@ -308,11 +308,55 @@ public class FileDbUtil {
 		}
 	}
 	
+	public String deleteFile(Filex theFile) throws SQLException {
+		PreparedStatement myStmt = null;
+
+		try {
+			// get db connection
+			myConn = dataSource.getConnection();
+
+			// create sql for update statement
+			String sql = "DELETE FROM file WHERE id = ? AND user_id = ?";
+
+			// prepare the statement
+			myStmt = myConn.prepareStatement(sql);
+
+			// set params
+			myStmt.setInt(1, theFile.getFileId());
+			myStmt.setInt(2, theFile.getUserId());
+			
+			try {
+				// execute SQL statement
+				boolean status = myStmt.execute();
+				
+				if(status == false) {
+					// if success
+					return "delete_success";
+					
+					//return newFolder.toString();
+					
+				}else {
+					// if failed
+					return "failed";
+				}
+			}
+			catch (SQLException e) {
+			   
+			    throw new SQLException("SQL error");
+			}
+
+		} finally {
+
+			// close JDBC object
+			close(myConn, myStmt, null);
+		}
+	}
+	
 	public Filex getFile(Filex theFile) throws SQLException {
 
 		PreparedStatement myStmt = null;
 		ResultSet myRs = null;
-		Filex fileData = new Filex(0, 0, null, null, null, null, null, null, null, null, null, null);
+		Filex fileData = new Filex(null, null, null, null, null, null);
 		
 		try {
 			
@@ -333,16 +377,15 @@ public class FileDbUtil {
 		// execute statement
 		myRs = myStmt.executeQuery();
 		
-		if(myRs.next()) {
-			int id = myRs.getInt("id");
-			String firstname = myRs.getString("firstname");
-			String lastname = myRs.getString("lastname");
-			String email = myRs.getString("email");
-			String role = myRs.getString("role");
-			String memory = myRs.getString("memory_usage");
-			String image = myRs.getString("profile_image");
+		if(myRs.next()) {	
+			String displayName  = myRs.getString("file_displayname");
+			String newName = myRs.getString("file_newname");
+			String filePath = myRs.getString("file_path");
+			String encryptedAesKey = myRs.getString("aes_key");
+			String encryptedPublicKey = myRs.getString("rsa_pub_key");
+			String encryptedPrivateKey = myRs.getString("rsa_priv_key");
 			
-			return new Filex(0, 0, null, null, null, null, null, null, null, null, null, null);
+			return new Filex(displayName, newName, filePath, encryptedAesKey, encryptedPublicKey, encryptedPrivateKey);
 		}
 			
 		return fileData;
@@ -353,7 +396,7 @@ public class FileDbUtil {
 			// close JDBC object
 			close(myConn, myStmt, myRs);
 		}
-	}
+	}	
 	
 	private void close(Connection Conn, Statement myStmt, ResultSet myRs) {
 		// TODO Auto-generated method stub

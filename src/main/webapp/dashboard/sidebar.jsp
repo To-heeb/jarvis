@@ -65,10 +65,15 @@
           </div>
 
           <div class="menu-inner-shadow"></div>
-
+			<%
+				String url = request.getRequestURL().toString();
+				String[] urlString = request.getRequestURI().toString().split("/");
+				String lastPath = urlString[3].replace(".jsp", "");
+				String pageName = lastPath;
+			%>
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item active">
+            <li class="menu-item <% if(lastPath.equals("home")){out.print("active");} %> <%= lastPath %>">
               <a href="home" class="menu-link">
                 
                 <i class='menu-icon tf-icons bx bx-cloud'></i>
@@ -77,7 +82,7 @@
             </li>
             
             <!-- Recent -->
-            <li class="menu-item">
+            <li class="menu-item <% if(lastPath.equals("recent")){out.print("active");} %>">
               <a href="recent" class="menu-link">
                 <i class='menu-icon tf-icons bx bx-time-five'></i>
                 <div data-i18n="Layouts">Recent</div>
@@ -85,7 +90,7 @@
             </li>
 			
 			<!-- Starred -->
-            <li class="menu-item">
+            <li class="menu-item <% if(lastPath.equals("starred")){out.print("active");} %>">
               <a href="starred" class="menu-link">
               	<i class='menu-icon tf-icons bx bx-star'></i>
                 <div data-i18n="Analytics">Starred</div>
@@ -93,7 +98,7 @@
             </li>
             
             <!-- Trash -->
-            <li class="menu-item">
+            <li class="menu-item  <% if(lastPath.equals("trash")){out.print("active");} %>">
               <a href="trash" class="menu-link">
                 <i class='menu-icon tf-icons bx bx-trash'></i>
                 <div data-i18n="Analytics">Trash</div>
@@ -101,7 +106,7 @@
             </li>
             
             <!-- Folders -->
-            <li class="menu-item">
+            <li class="menu-item  <% if(lastPath.equals("folders")){out.print("active");} %>">
               <a href="folders" class="menu-link">
                 <i class='menu-icon tf-icons bx bx-folder'></i>
                 <div data-i18n="Analytics">Folders</div>
@@ -109,7 +114,7 @@
             </li>
             
             <!-- Settings -->
-            <li class="menu-item">
+            <li class="menu-item  <% if(lastPath.equals("profile-settings")){out.print("active");} %>">
               <a href="settings" class="menu-link">
                 <i class='menu-icon tf-icons bx bx-cog  bx-spin-hover'></i>
                 <div data-i18n="">Settings</div>

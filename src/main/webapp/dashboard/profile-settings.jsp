@@ -73,7 +73,7 @@
                               class="account-file-input"
                               name="profile_image"
                               hidden
-                              accept="image/png, image/jpeg"
+                              accept="image/png, image/jpeg, image/jpg"
                             />
                           </label>
                           <!--  <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
@@ -206,7 +206,7 @@
                       <div class="mb-3 col-12 mb-0">
                         <div class="alert alert-warning">
                           <h6 class="alert-heading fw-bold mb-1">Are you sure you want to deactivate your account?</h6>
-                          <p class="mb-0">Once you deactivate your account, cannot be reactivated again. Please be certain.</p>
+                          <p class="mb-0">Once you deactivate your account, it can only be reactivated by the admin. Please be certain.</p>
                         </div>
                       </div>
                       <form id="formAccountDeactivation" action="deactivate" method="POST">

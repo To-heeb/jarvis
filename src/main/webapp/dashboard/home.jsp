@@ -5,6 +5,7 @@
 	if(session.getAttribute("firstname") == null){
 	    response.sendRedirect(baseURL + "auth/login.jsp");
 	}
+
 %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -265,22 +266,6 @@
 					         
 					         <c:when test = "${fileItem.fileType == 'application/x-httpd-php' }">
 					            <span><a href="<%= baseURL+"file_upload/"%>${fileItem.newName}" target="_blank"><img src="../dashboard_assets/img/demo/php.png" class="w-100 mb-1 border border-primary p-3 border-2 rounded" width="" height="100px"></a></span>
-					         </c:when>
-					         
-					         <c:when test = "${salary > 1000}">
-					            Salary is very good.
-					         </c:when>
-					         
-					         <c:when test = "${salary > 1000}">
-					            Salary is very good.
-					         </c:when>
-					         
-					         <c:when test = "${salary > 1000}">
-					            Salary is very good.
-					         </c:when>
-					         
-					         <c:when test = "${salary > 1000}">
-					            Salary is very good.
 					         </c:when>
 					         
 					         <c:when test = "${salary > 1000}">

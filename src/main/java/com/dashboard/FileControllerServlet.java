@@ -222,9 +222,40 @@ public class FileControllerServlet extends HttpServlet {
 		
 	}
 
-	private void deleteFile(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+	private void deleteFile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		// TODO Auto-generated method stub
+		String fileId = request.getParameter("file_id").trim();
+		
+		if(fileId.isEmpty()) {
+			// return to dashboard and throw an error
+			sendMessage(request, response, "/dashboard/home", null, "failed");
+			return;
+		}
+		
+		// Access session
+		HttpSession session = request.getSession(true);
+		
+		int userId = (int) session.getAttribute("id");
+		
+		int fileIdInt = Integer.parseInt(request.getParameter("file_id").trim());
+		
+		// create new file object here;
+		Filex theFile = new Filex(fileIdInt, userId);
+		
+		// add the folder to the database;
+		String status;
+		try {
+			status = fileDbUtil.deleteFile(theFile);
+			
+			//Delete others things
+			
+			// if folder successfully created redirect to dashboard with success message else send error to dashboard
+			sendMessage(request, response, "/dashboard/home", null, status);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void renameFile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

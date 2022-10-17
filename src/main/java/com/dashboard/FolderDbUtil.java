@@ -296,6 +296,51 @@ public class FolderDbUtil {
 		}
 	}
 	
+	
+	public String deleteFolder(Folder newFolder) throws SQLException {
+		PreparedStatement myStmt = null;
+
+		try {
+			// get db connection
+			myConn = dataSource.getConnection();
+
+			// create sql for update statement
+			String sql = "DELETE FROM folder WHERE id = ? AND user_id = ?";
+
+			// prepare the statement
+			myStmt = myConn.prepareStatement(sql);
+
+			// set params
+			myStmt.setInt(1, newFolder.getFolderId());
+			myStmt.setInt(2, newFolder.getUserId());
+			
+			try {
+				// execute SQL statement
+				boolean status = myStmt.execute();
+				
+				if(status == false) {
+					// if success
+					return "delete_success";
+					
+					//return newFolder.toString();
+					
+				}else {
+					// if failed
+					return "failed";
+				}
+			}
+			catch (SQLException e) {
+			   
+			    throw new SQLException("SQL error");
+			}
+
+		} finally {
+
+			// close JDBC object
+			close(myConn, myStmt, null);
+		}
+	}
+	
 	private void close(Connection Conn, Statement myStmt, ResultSet myRs) {
 		// TODO Auto-generated method stub
 		

@@ -99,8 +99,37 @@ public class FolderControllerServlet extends HttpServlet {
 		
 	}
 
-	private void deleteFolder(HttpServletRequest request, HttpServletResponse response) {
+	private void deleteFolder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String folderId = request.getParameter("folder_id").trim();
+		
+		if(folderId.isEmpty()) {
+			// return to dashboard and throw an error
+			sendMessage(request, response, "/dashboard/home", null, "failed");
+			return;
+		}
+		
+		// Access session
+		HttpSession session = request.getSession(true);
+		
+		int userId = (int) session.getAttribute("id");
+		
+		int folderIdInt = Integer.parseInt(request.getParameter("folder_id").trim());
+		
+		// create new folder object here;
+		Folder newFolder = new Folder(folderIdInt, userId);
+		
+		// add the folder to the database;
+		String status;
+		try {
+			status = folderDbUtil.deleteFolder(newFolder);
+			
+			// if folder successfully created redirect to dashboard with success message else send error to dashboard
+			sendMessage(request, response, "/dashboard/home", null, status);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

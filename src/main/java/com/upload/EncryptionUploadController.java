@@ -19,6 +19,7 @@ import javax.sql.DataSource;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.json.JSONObject;
 
+import com.authentication.User;
 import com.dashboard.FileDbUtil;
 import com.dashboard.Filex;
 
@@ -60,7 +61,7 @@ import javax.crypto.IllegalBlockSizeException;
 @WebServlet(name = "/EncryptionUploadController",asyncSupported = true,  urlPatterns = {"/upload_encrypted"})
 @MultipartConfig(
 		  fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
-		  maxFileSize = 1024 * 1024 * 10,      // 10 MB
+		  maxFileSize = 1024 * 1024 * 5,      // 5 MB
 		  maxRequestSize = 1024 * 1024 * 100   // 100 MB
 		)	
 public class EncryptionUploadController extends HttpServlet {
@@ -114,38 +115,64 @@ public class EncryptionUploadController extends HttpServlet {
 				int fileIdInt = Integer.parseInt(request.getParameter("file_id").trim());
 
 				//get file path string
-				String filePathString = getServletContext().getRealPath("/"+"aes_encrypted_file_upload" +File.separator + filename);
+				String encryptedFilePathString = getServletContext().getRealPath("/"+"aes_encrypted_file_upload" +File.separator + filename);
+				
+				//get file path string
+				String decryptedFilePathString = getServletContext().getRealPath("/"+"aes_decrypted_file_download" +File.separator + filename);
 				
 				//file to be downloaded
-				File downloadedFile = new File(filePathString);
+				File downloadedFile = new File(decryptedFilePathString);
+				File encryptedFile = new File(encryptedFilePathString);
 				
 				//get file type
-				String fileType = Files.probeContentType(downloadedFile.toPath().toAbsolutePath());
+				String fileType = Files.probeContentType(encryptedFile.toPath().toAbsolutePath());
 				
 				JSONObject json = new JSONObject();
-				if(downloadedFile.exists()) {
+				if(encryptedFile.exists()) {
 					
 					// create new folder object here;
 					Filex theFile = new Filex(fileIdInt, userId);
 					
-					response.setContentType(fileType);
-					response.setContentLength((int) downloadedFile.length());
-					
-					//force to download
-					String headerKey = "Content-Disposition";
-					String headerValue = String.format("attachment: filename=\"%s\"", downloadedFile.getName());
-					response.setHeader(headerKey, headerValue);
-					
-					FileInputStream fileInputStream = new FileInputStream(downloadedFile);
-					//ServletOutputStream  outputStream = response.getOutputStream();
-					
-					int bytez;
-					
-					while((bytez = fileInputStream.read()) != -1) {
-						//out.write(bytez);
+					// get the user to the database
+					try {
+						
+						
+						Filex fileData = fileDbUtil.getFile(theFile);
+						
+						//Decryption starts here
+						decryptAES(fileData.getEncryptedAesKey(), fileData.getEncryptedPrivateKey(), fileData.getEncryptedPublicKey(), encryptedFilePathString, decryptedFilePathString);
+						
+						//System.out.println("encryptedFilePathString: "+encryptedFilePathString);
+						//System.out.println("decryptedFilePathString: "+decryptedFilePathString);
+						//System.out.println("filename: "+filename);
+						//System.out.println("fileId: "+fileId);
+						
+						
+						response.setContentType(fileType);
+						response.setContentLength((int) downloadedFile.length());
+						
+						//force to download
+						String headerKey = "Content-Disposition";
+						String headerValue = String.format("attachment: filename=\"%s\"", downloadedFile.getName());
+						response.setHeader(headerKey, headerValue);
+						
+						FileInputStream fileInputStream = new FileInputStream(downloadedFile);
+						//ServletOutputStream  outputStream = response.getOutputStream();
+						
+						int bytez;
+						
+						while((bytez = fileInputStream.read()) != -1) {
+							out.write(bytez);
+						}
+						fileInputStream.close();
+						downloadedFile.delete();
+						out.close();
+						
+						
+					} catch (SQLException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeySpecException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-					fileInputStream.close();
-					out.close();
 								
 				}else {
 					
@@ -245,6 +272,7 @@ public class EncryptionUploadController extends HttpServlet {
 			//AES encryption		
 			Cipher aesCipher = Cipher.getInstance("AES");
 			KeyGenerator aesKeyGenerator = KeyGenerator.getInstance("AES");
+			aesKeyGenerator.init(128);
 			Key aesKey = aesKeyGenerator.generateKey();
 			aesCipher.init(Cipher.ENCRYPT_MODE, aesKey); 
 			CipherInputStream aesCipt = new CipherInputStream(new FileInputStream(new File(filePathString)), aesCipher);
@@ -260,7 +288,7 @@ public class EncryptionUploadController extends HttpServlet {
 			
 			//RSA encryption
 			//Create a Cipher object
-			Cipher rsaCipher = Cipher.getInstance("RSA/ECB/NoPadding");
+			Cipher rsaCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 			KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
 	        generator.initialize(1024);
 	        KeyPair pair = generator.generateKeyPair();
@@ -290,6 +318,7 @@ public class EncryptionUploadController extends HttpServlet {
 			    	System.out.println("encryptedAesKey: " +encryptedAesKey);
 					System.out.println("encryptedPublicKey: " +encryptedPublicKey);
 					System.out.println("encryptedPrivateKey: " +encryptedPrivateKey);
+					System.out.println("aesKey: " +aesKey);
 					
 			    }else {
 			    	json.put("status", "error");
@@ -303,10 +332,7 @@ public class EncryptionUploadController extends HttpServlet {
 			}
 		} catch(Exception e){
 			e.printStackTrace();
-		}
-
-		
-		
+		}	
 	}
 	
 	public String generateRandomChars(String candidateChars, int length) {
@@ -333,13 +359,10 @@ public class EncryptionUploadController extends HttpServlet {
 
 	    //Initialize the cipher for encryption. Use the public key.
 	    rsaCipher.init(Cipher.ENCRYPT_MODE, publicKey);
-
-	    //Store byte in another byte
-	    byte[] textBytes = aesKey;
 	    
 	    //Perform the encryption using doFinal
-	    byte[] encByte = rsaCipher.doFinal(textBytes);
-
+	    byte[] encByte = rsaCipher.doFinal(aesKey);
+	    System.out.println("encryptedMessage: "+encByte);
 	    // converts to base64 String for easier display and storage.
 	    return encode(encByte);
 	}
@@ -348,7 +371,7 @@ public class EncryptionUploadController extends HttpServlet {
 	{
 
 	    //Create a Cipher object
-	    Cipher rsaCipher = Cipher.getInstance("RSA/ECB/NoPadding");
+	    Cipher rsaCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 
 	    //Initialize the cipher for encryption. Use the public key.
 	    rsaCipher.init(Cipher.DECRYPT_MODE, privateKey);
@@ -356,34 +379,40 @@ public class EncryptionUploadController extends HttpServlet {
 	    //Decode Base64 String to byte
 	    byte[] decByte = decode(encryptedAesKey);
 	    
-	    //Get Key from byte
-	    Key key = new SecretKeySpec(decByte, "AES");
+	    //Perform the decryption using doFinal
+	    byte[] decryptedMessage = rsaCipher.doFinal(decByte);
+	    
+	    System.out.println("decryptedMessage: "+decryptedMessage);
+	    //Get Key from bytedecryptedMessage
+	    Key key = new SecretKeySpec(decryptedMessage, "AES");
 
 	    return key;
 	}
 	
-	public void decryptAES(String encryptedAesKey, String privateKey, String publicKey, String filePathString) throws InvalidKeyException, IOException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeySpecException {
+	public void decryptAES(String encryptedAesKey, String privateKey, String publicKey, String encryptedFilePathString, String decryptedFilePathString) throws InvalidKeyException, IOException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeySpecException {
 		
 		// Cipher		
 		Cipher aesCipher = Cipher.getInstance("AES");
 		
-		
-		X509EncodedKeySpec keySpecPublic = new X509EncodedKeySpec(decode(publicKey));
+		//X509EncodedKeySpec keySpecPublic = new X509EncodedKeySpec(decode(publicKey));
         PKCS8EncodedKeySpec keySpecPrivate = new PKCS8EncodedKeySpec(decode(privateKey));
         
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         
-        PublicKey decryptedPublicKey = keyFactory.generatePublic(keySpecPublic);
+        //PublicKey decryptedPublicKey = keyFactory.generatePublic(keySpecPublic);
         PrivateKey decryptedPrivateKey = keyFactory.generatePrivate(keySpecPrivate);
+        
+        //System.out.println("decryptedPublicKey: " +decryptedPublicKey);
+        //System.out.println("decryptedPrivateKey: " +decryptedPrivateKey);
         
 		// Decrypt AES key
 		Key key = decryptRSA(decryptedPrivateKey, encryptedAesKey);
-		
+		System.out.println("aesKey: " +key);
 		aesCipher.init(Cipher.DECRYPT_MODE, key);
 		  
-		CipherInputStream ciptt=new CipherInputStream(new FileInputStream(new File("D:\\encryptdecrypt\\encrypt.jpg")), aesCipher);
+		CipherInputStream ciptt=new CipherInputStream(new FileInputStream(new File(encryptedFilePathString)), aesCipher);
 
-		FileOutputStream fileop=new FileOutputStream(new File("D:\\encryptdecrypt\\decrypt.jpg"));
+		FileOutputStream fileop=new FileOutputStream(new File(decryptedFilePathString));
 
 		int j;
 		while((j=ciptt.read())!=-1)

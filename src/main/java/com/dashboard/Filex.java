@@ -110,6 +110,16 @@ public class Filex {
 		this.userId = userId;
 		this.displayName = fileName;
 	}
+	
+	public Filex(String displayName, String newName, String filePath, String encryptedAesKey, String encryptedPublicKey, String encryptedPrivateKey) {
+		// TODO Auto-generated constructor stub
+		this.displayName = displayName;
+		this.newName = newName;
+		this.filePath = filePath;
+		this.encryptedAesKey = encryptedAesKey;
+		this.encryptedPublicKey = encryptedPublicKey;
+		this.encryptedPrivateKey = encryptedPrivateKey;
+	}
 
 	public int getId() {
 		return id;
