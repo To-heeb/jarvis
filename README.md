@@ -4,7 +4,7 @@ gif of my app will be here
 
 ### About
 
-    Jarvis is a secured cloud storage application that  is built with Java JSP. It allow users to upload a file through a two step encryption algorithm(AES and RSA) that encrypts the uploaded file and keep them secured to only the user.
+Jarvis is a secured cloud storage application that  is built with Java JSP. It allow users to upload a file through a two step encryption algorithm(AES and RSA) that encrypts the uploaded file and keep them secured to only the user.
 
 ### Features
 
